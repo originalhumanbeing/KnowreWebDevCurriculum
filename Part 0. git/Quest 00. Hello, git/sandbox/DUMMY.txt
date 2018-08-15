@@ -1,0 +1,4 @@
+Hello, git!
+This is dummy text file!
+
+##3 stash test
