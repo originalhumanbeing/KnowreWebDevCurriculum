@@ -30,12 +30,28 @@
 
 ## Checklist
 * CSS를 HTML에 적용하는 세 가지 방법의 장단점은 무엇인가요?
+  * Inline: HTML 태그에 직접 스타일을 작성하는 것으로 쉽고 빠르다는 장점이 있다, 하지만 속성과 값만 작성 가능하고, 재사용이 불가능하다는 한계가 있다. 
+  * Style 태그 사용: style 태그 안에 원하는 스타일을 기재하여 간편하게 적용할 수 있다, 그러나 Inline과 마찬가지로 재사용은 불가능하다.
+  * link 방식: style 파일을 따로 만들고 파일 자체를 링크로 걸어 사용할 때 가장 큰 장점은 재사용이 가능하다는 것이다. 또, HTML 문서가 스타일과 명확히 구분되어 복잡하지 않다는 것도 장점이다. 
 * 여러 개의 CSS 규칙이 한 개의 대상에 적용될 때, 어떤 규칙이 우선순위를 가지게 되나요?
+  * !important > inline style attr > id > class, 다른 attr > tag 순으로 우선순위 적용
+  * class나 다른 attr 같은 경우, 갯수가 많을수록 우선순위가 올라감
+  * 동일한 조건일 경우, 후에 기술된 것이 우선순위를 가짐
+  * !important, inline style attr 방식은 우선순위가 높지만 사용은 지양할 것
 * 어떤 박스가 `position: absolute;`인 속성을 갖는다면, 그 위치의 기준점은 어디가 되나요?
+  * static이 아닌 다른 position을 갖는 상위 태그가 기준점이 되며, 그런 태그가 존재하지 않을 경우에는 html body가 기준점이 됨
 * 가로나 세로로 여러 개의 박스가 공간을 채우되, 그 중 한 개의 박스만 가변적인 크기를 가지고 나머지 박스는 고정된 크기를 갖게 하려면 어떻게 해야 할까요?
+  * float + negative margin + padding: 지정한 요소에 고정하려고 하는 요소의 넓이만큼 negative margin과 padding값을 준다, padding값을 콘텐츠 크기에 포함시키기 위해서 box-sizing은 border-box로 지정한다.
+  * float + calc: 가변해야 하는 요소의 넓이를 calc함수를 이용해서 지정한다, (100% - 고정하려고 하는 요소의 넓이)
+  * margin + position: absolute: 가변해야 하는 요소의 position은 absolute로 지정하고, margin값은 고정할 요소의 넓이만큼 준다.  
+  * display: table 이용: 가변해야 하는 요소, 고정해야 하는 요소를 감싸는 wrapper를 만들어서 display: table로 지정한다, 가변해야 하는 요소는 display: table-cell로 지정한다, 고정해야 하는 요소는 필요한 만큼 넓이값을 지정한다.
+  * flexbox 활용: 고정해야 할 요소를 flex-basis를 활용해서 크기를 고정해놓는다 (width값을 지정해도 무방하다), 그리고 flex-shrink, flex-grow를 0으로 지정한다. 반대로 가변해야 할 요소는 flex-grow, flex-shrink를 1로 지정한다.
+  * [참고 사이트] (https://www.arealme.com/which-12-archetype-are-you/ko/)
 * `float` 속성은 왜 좋지 않을까요?
+  * float를 사용하면 뜨게 되므로 높이 잡기가 용이하지 않다, 또한 clear를 사용해야 하는 등 추가적인 처리도 필요하다.
 * Flexbox(Flexible box)와 CSS Grid의 차이와 장단점은 무엇일까요?
-
+  * flexbox는 말 그대로 유연한 것이 최대 장점이어서 변경이 쉽고, 배치하려고 하는 요소나 부모 요소의 크기를 정확히 몰라도 배치, 크기 조절, 정렬 등이 가능하다. 주로 소규모 애플리케이션/웹사이트에 적용하기가 적당하다.
+  * grid는 flexbox와 달리 2차원 정렬이 가능하다, 즉 column과 row를 동시에 정렬할 수 있다. 
 ## Quest
 * 아래의 그림들은 모두 전체적으로 창의 크기에 꽉 차야 하며, 창의 크기가 일정 크기 이상일 경우 전체 창 크기가 어떻게 바뀌되더라도 그림에 맞게 각 박스의 크기가 조절되어야 합니다.
 * **주의사항**
