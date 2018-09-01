@@ -20,6 +20,7 @@
 
 ## Checklist
 * CSS 퍼블리싱을 할 때, class와 selector들은 어떤 식으로 정리하는 것이 좋을까요?
+  * 동일한 태그여도(selector) 다른 스타일을 적용되는 경우에는 class를 사용하는 것이 보다 합리적이다
 
 ## Quest
 * Quest 01에서 만들었던 HTML을 바탕으로, [이 그림](github.png)의 레이아웃과 CSS를 최대한 비슷하게 흉내내 보세요. 꼭 완벽히 정확할 필요는 없으나 align 등의 속성은 일치해야 합니다.
