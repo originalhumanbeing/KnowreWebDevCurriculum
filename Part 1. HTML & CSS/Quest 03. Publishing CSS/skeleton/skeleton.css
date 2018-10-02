@@ -1,13 +1,118 @@
+/*전체 적용될 부분 및 큰 레이아웃*/
 * {
-	/* TODO: 어떤 코드가 들어가야 할까요? */
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 html {
-	/* TODO: 어떤 코드가 들어가야 할까요? */
+    font-family: sans-serif;
+    color: #24292e;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
+    grid-template-rows: 10% 1fr 10%;
+    grid-template-areas:
+            "header header header"
+            "main main main"
+            "footer footer footer";
 }
 
 body {
-	/* TODO: 어떤 코드가 들어가야 할까요? */
+    background: #ffffff;
+    font-size: 14px;
+    grid-column-start: 2;
 }
 
-/* TODO: 또 어떤 코드들이 들어가야 할까요? */
+ul, li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #0366d6;
+}
+
+label {
+    display: none;
+}
+
+/*네비 부분 헤더*/
+.header {
+    background: #24292e;
+    color: rgba(255,255,255,0.75);
+    /*grid-area: header;*/
+    display: flex;
+    align-items: center;
+}
+
+.menu-in-header {
+    display: flex;
+    flex-grow: 2;
+}
+
+.icon-menu-in-header {
+    display: flex;
+    flex-grow: 0.5;
+}
+
+.main {
+    background: cornflowerblue;
+    /*grid-area: main;*/
+}
+
+.main-header {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-header h1 {
+    flex-basis: 600px;
+}
+
+.repo-info-menu {
+    flex-basis: 300px;
+    display: flex;
+    /*float: right;*/
+}
+
+.repo-menu {
+    display: flex;
+}
+
+/*메인 중앙 쪽 메뉴들*/
+.repo-status-menu {
+    display: flex;
+}
+
+.repo-nav {
+    display: flex;
+}
+
+.btn-for-files {
+    margin-left: 450px;
+}
+
+.latest-commit-time {
+    display: inline-block;
+    margin-left: 360px;
+}
+
+/*메인 중앙 - 커밋 리스트*/
+.folder-lists {
+    width: 100%;
+}
+
+footer {
+    background: yellowgreen;
+    /*grid-area: footer;*/
+    display: flex;
+}
+
+.github-operation-related-rules {
+    display: flex;
+}
+
+.github-info {
+    display: flex;
+}

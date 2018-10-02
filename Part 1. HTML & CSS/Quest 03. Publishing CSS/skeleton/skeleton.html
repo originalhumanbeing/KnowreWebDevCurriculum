@@ -1,154 +1,296 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<link rel="stylesheet" href="./skeleton.css">
-	</head>
-	<body>
-		<header>
-			<a href="https://github.com/">
-				<img src="#" alt="github icon">
-			</a>
-			<form>
-				<input type="text" value="This Repository" id="search1"><label for="search1">This Repository</label>
-				<input type="search" placeholder="Search" id="search2"><label for="search2">Search</label>
-			</form>
-			<ul>
-				<li><a href="#">Pull requests</a></li>
-				<li><a href="#">Issues</a></li>
-				<li><a href="#">Marketplace</a></li>
-				<li><a href="#">Explore</a></li>
-			</ul>
-			<ul>
-				<li><a href="#"><img src="#" alt="notification"></a></li>
-				<li><a href="#"><img src="#" alt="menu"></a></li>
-				<li><a href="#"><img src="#" alt="profile"></a></li>
-			</ul>
-		</header>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="./skeleton.css">
+    </head>
+    <body>
+        <header class="header">
+            <a href="https://github.com/">
+                <svg height="32" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="32"
+                     aria-hidden="true" style="brightness: 0.2">
+                    <path fill-rule="evenodd"
+                          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+            <form>
+                <input type="text" value="This Repository" id="search1"><label for="search1">This Repository</label>
+                <input type="search" placeholder="Search" id="search2"><label for="search2">Search</label>
+            </form>
+            <ul class="menu-in-header">
+                <li><a href="#">Pull requests</a></li>
+                <li><a href="#">Issues</a></li>
+                <li><a href="#">Marketplace</a></li>
+                <li><a href="#">Explore</a></li>
+            </ul>
+            <ul class="icon-menu-in-header">
+                <li>
+                    <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                            <path fill-rule="evenodd"
+                                  d="M13.99 11.991v1H0v-1l.73-.58c.769-.769.809-2.547 1.189-4.416.77-3.767 4.077-4.996 4.077-4.996 0-.55.45-1 .999-1 .55 0 1 .45 1 1 0 0 3.387 1.229 4.156 4.996.38 1.879.42 3.657 1.19 4.417l.659.58h-.01zM6.995 15.99c1.11 0 1.999-.89 1.999-1.999H4.996c0 1.11.89 1.999 1.999 1.999z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                            <path fill-rule="evenodd" d="M12 9H7v5H5V9H0V7h5V2h2v5h5v2z"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                            <path fill-rule="evenodd" d="M0 5l6 6 6-6H0z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M14.7 5.34c.13-.32.55-1.59-.13-3.31 0 0-1.05-.33-3.44 1.3-1-.28-2.07-.32-3.13-.32s-2.13.04-3.13.32c-2.39-1.64-3.44-1.3-3.44-1.3-.68 1.72-.26 2.99-.13 3.31C.49 6.21 0 7.33 0 8.69 0 13.84 3.33 15 7.98 15S16 13.84 16 8.69c0-1.36-.49-2.48-1.3-3.35zM8 14.02c-3.3 0-5.98-.15-5.98-3.35 0-.76.38-1.48 1.02-2.07 1.07-.98 2.9-.46 4.96-.46 2.07 0 3.88-.52 4.96.46.65.59 1.02 1.3 1.02 2.07 0 3.19-2.68 3.35-5.98 3.35zM5.49 9.01c-.66 0-1.2.8-1.2 1.78s.54 1.79 1.2 1.79c.66 0 1.2-.8 1.2-1.79s-.54-1.78-1.2-1.78zm5.02 0c-.66 0-1.2.79-1.2 1.78s.54 1.79 1.2 1.79c.66 0 1.2-.8 1.2-1.79s-.53-1.78-1.2-1.78z"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                            <path fill-rule="evenodd" d="M0 5l6 6 6-6H0z"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </header>
 
-		<section class="main">
-			<header class="main-header">
-				<h1><img src="#" alt="title icon"><span id="user_id">KnowRe/</span>WebDevCurriculum</h1>
-				<ul class="repo-info-menu">
-					<li><a href="#"><img src="#" alt="unwatch icon">Unwatch</a></li>
-					<li><a href="#"><img src="#" alt="star icon">Star</a></li>
-					<li><a href="#"><img src="#" alt="fork icon">Fork</a></li>
-				</ul>
-				<ul class="repo-menu">
-					<li><a href="#"><img src="#" alt="code icon">Code</a></li>
-					<li><a href="#"><img src="#" alt="issues icon">Issues</a></li>
-					<li><a href="#"><img src="#" alt="pull request icon">Pull requests</a></li>
-					<li><a href="#"><img src="#" alt="projects icon">Projects</a></li>
-					<li><a href="#"><img src="#" alt="insights icon">Insights</a></li>
-				</ul>
-			</header>
+        <section class="main">
+            <header class="main-header">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                        <path fill-rule="evenodd"
+                              d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"/>
+                    </svg>
+                    <span id="user_id">KnowRe/</span>WebDevCurriculum
+                </h1>
+                <ul class="repo-info-menu">
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/>
+                            </svg>
+                            Unwatch
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                                <path fill-rule="evenodd" d="M0 5l6 6 6-6H0z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                                <path fill-rule="evenodd"
+                                      d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"/>
+                            </svg>
+                            Star
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                                <path fill-rule="evenodd"
+                                      d="M10 7c-.73 0-1.38.41-1.73 1.02V8C7.22 7.98 6 7.64 5.14 6.98c-.75-.58-1.5-1.61-1.89-2.44A1.993 1.993 0 0 0 2 .99C.89.99 0 1.89 0 3a2 2 0 0 0 1 1.72v6.56c-.59.35-1 .99-1 1.72 0 1.11.89 2 2 2a1.993 1.993 0 0 0 1-3.72V7.67c.67.7 1.44 1.27 2.3 1.69.86.42 2.03.63 2.97.64v-.02c.36.61 1 1.02 1.73 1.02 1.11 0 2-.89 2-2 0-1.11-.89-2-2-2zm-6.8 6c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm8 6c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/>
+                            </svg>
+                            Fork
+                        </a>
+                    </li>
+                </ul>
+                <ul class="repo-menu">
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                                <path fill-rule="evenodd"
+                                      d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14 8 9.5 3zm-5 0L0 8l4.5 5L6 11.5 2.5 8 6 4.5 4.5 3z"/>
+                            </svg>
+                            Code
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                                <path fill-rule="evenodd"
+                                      d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"/>
+                            </svg>
+                            Issues
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
+                                <path fill-rule="evenodd"
+                                      d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/>
+                            </svg>
+                            Pull requests
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16">
+                                <path fill-rule="evenodd"
+                                      d="M10 12h3V2h-3v10zm-4-2h3V2H6v8zm-4 4h3V2H2v12zm-1 1h13V1H1v14zM14 0H1a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1z"/>
+                            </svg>
+                            Projects
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/>
+                            </svg>
+                            Insights
+                        </a>
+                    </li>
+                </ul>
+            </header>
 
-			<section class="main-detail">
-				<h2>KnowRe web development curriculum for noobs</h2>
-				<ul class="repo-status-menu">
-					<li><a href="#"><img src="#" alt="commits">Commits</a></li>
-					<li><a href="#"><img src="#" alt="branch">Branch</a></li>
-					<li><a href="#"><img src="#" alt="releases">Releases</a></li>
-					<li><a href="#"><img src="#" alt="contributors">Contributors</a></li>
-					<li><a href="#"><img src="#" alt="license">MIT</a></li>
-				</ul>
-				<div class="repo-nav">
-					<div class="select-branch-group">
-						<button class="select-branch-btn">
-							<span>Branch:</span>
-							<span>master</span>
-						</button>
-						<div class="select-branch-modal">
-							<div class="select-branch-modal-header">
-								<span>Switch branches/tags</span>
-								<a href="#"><img src="#" alt="close-select-branch-modal"></a>
-							</div>
-							<div class="select-branch-modal-body">
-								<input type="text" placeholder="Find or create a branch..">
-								<ul class="switch-tabs">
-									<li><a href="#">Braches</a></li>
-									<li><a href="#">Tags</a></li>
-								</ul>
-							</div>
-							<label for="select-branch-list">
-								<select id="select-branch-list">
-									<option value="master">Master</option>
-								</select>
-							</label>
-							<label for="select-tag-list">
-								<select id="select-tag-list"></select>
-							</label>
-						</div>
-					</div>
-					<button class="create-pull-req">New pull request</button>
-					<div class="btn-for-files">
-						<button>Create new file</button>
-						<button>Upload files</button>
-						<button>Find file</button>
-					</div>
-					<button class="clone-btn">Clone or download</button>
-				</div>
-				<div class="latest-commit">
-					<img src="#" alt="profile-pic">
-					<span>KnowRe</span>
-					<span>Quest 02 added constraint</span>
-					<span>Latest commit 8a3080e on 7 Aug 2016</span>
-				</div>
-				<table class="folder-lists">
-					<tbody>
-					<tr class="folder-list">
-						<td><img src="#" alt="folder-icon"></td>
-						<td class="folder-title">Part 0. git/Quest 00. Hello, git</td>
-						<td class="commit-msg">Part 2 finished</td>
-						<td class="commit-date">2years ago</td>
-					</tr>
-					<tr class="folder-list">
-						<td><img src="#" alt="folder-icon"></td>
-						<td class="folder-title">Part 1. HTML & CSS</td>
-						<td class="commit-msg">Quest 02 added constraint</td>
-						<td class="commit-date">2years ago</td>
-					</tr>
-					<tr class="folder-list">
-						<td><img src="#" alt="md-icon"></td>
-						<td class="file-title">README.md</td>
-						<td class="commit-msg">Fix: Removed advertisement</td>
-						<td class="commit-date">2years ago</td>
-					</tr>
-					</tbody>
-				</table>
-				<div class="file-content">
-					<div class="content-head">
-						<img src="#" alt="file-icon">
-						<span>README.md</span>
-					</div>
-					<div class="content-body">
-						KnowRe web development curriculum 2018
-					</div>
-				</div>
-			</section>
-		</section>
+            <section class="main-detail">
+                <h2>KnowRe web development curriculum for noobs</h2>
+                <ul class="repo-status-menu">
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                                <path fill-rule="evenodd"
+                                      d="M10.86 7c-.45-1.72-2-3-3.86-3-1.86 0-3.41 1.28-3.86 3H0v2h3.14c.45 1.72 2 3 3.86 3 1.86 0 3.41-1.28 3.86-3H14V7h-3.14zM7 10.2c-1.22 0-2.2-.98-2.2-2.2 0-1.22.98-2.2 2.2-2.2 1.22 0 2.2.98 2.2 2.2 0 1.22-.98 2.2-2.2 2.2z"/>
+                            </svg>
+                            Commits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16">
+                                <path fill-rule="evenodd"
+                                      d="M10 5c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v.3c-.02.52-.23.98-.63 1.38-.4.4-.86.61-1.38.63-.83.02-1.48.16-2 .45V4.72a1.993 1.993 0 0 0-1-3.72C.88 1 0 1.89 0 3a2 2 0 0 0 1 1.72v6.56c-.59.35-1 .99-1 1.72 0 1.11.89 2 2 2 1.11 0 2-.89 2-2 0-.53-.2-1-.53-1.36.09-.06.48-.41.59-.47.25-.11.56-.17.94-.17 1.05-.05 1.95-.45 2.75-1.25S8.95 7.77 9 6.73h-.02C9.59 6.37 10 5.73 10 5zM2 1.8c.66 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2C1.35 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2zm0 12.41c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm6-8c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/>
+                            </svg>
+                            Branch
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                                <path fill-rule="evenodd"
+                                      d="M7.685 1.72a2.49 2.49 0 0 0-1.76-.726H3.48A2.5 2.5 0 0 0 .994 3.48v2.456c0 .656.269 1.292.726 1.76l6.024 6.024a.99.99 0 0 0 1.402 0l4.563-4.563a.99.99 0 0 0 0-1.402L7.685 1.72zM2.366 7.048A1.54 1.54 0 0 1 1.9 5.925V3.48c0-.874.716-1.58 1.58-1.58h2.456c.418 0 .825.159 1.123.467l6.104 6.094-4.702 4.702-6.094-6.114zm.626-4.066h1.989v1.989H2.982V2.982h.01z"/>
+                            </svg>
+                            Releases
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4z"/>
+                            </svg>
+                            Contributors
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16">
+                                <path fill-rule="evenodd"
+                                      d="M7 4c-.83 0-1.5-.67-1.5-1.5S6.17 1 7 1s1.5.67 1.5 1.5S7.83 4 7 4zm7 6c0 1.11-.89 2-2 2h-1c-1.11 0-2-.89-2-2l2-4h-1c-.55 0-1-.45-1-1H8v8c.42 0 1 .45 1 1h1c.42 0 1 .45 1 1H3c0-.55.58-1 1-1h1c0-.55.58-1 1-1h.03L6 5H5c0 .55-.45 1-1 1H3l2 4c0 1.11-.89 2-2 2H2c-1.11 0-2-.89-2-2l2-4H1V5h3c0-.55.45-1 1-1h4c.55 0 1 .45 1 1h3v1h-1l2 4zM2.5 7L1 10h3L2.5 7zM13 10l-1.5-3-1.5 3h3z"/>
+                            </svg>
+                            MIT
+                        </a>
+                    </li>
+                </ul>
+                <div class="repo-nav">
+                    <div class="select-branch-group">
+                        <button class="select-branch-btn">
+                            <span>Branch:</span>
+                            <span>master</span>
+                        </button>
+                        <!--<div class="select-branch-modal">-->
+                            <!--<div class="select-branch-modal-header">-->
+                                <!--<span>Switch branches/tags</span>-->
+                                <!--<a href="#"><img src="#" alt="close-select-branch-modal"></a>-->
+                            <!--</div>-->
+                            <!--<div class="select-branch-modal-body">-->
+                                <!--<input type="text" placeholder="Find or create a branch..">-->
+                                <!--<ul class="switch-tabs">-->
+                                    <!--<li><a href="#">Braches</a></li>-->
+                                    <!--<li><a href="#">Tags</a></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<label for="select-branch-list">-->
+                                <!--<select id="select-branch-list">-->
+                                    <!--<option value="master">Master</option>-->
+                                <!--</select>-->
+                            <!--</label>-->
+                            <!--<label for="select-tag-list">-->
+                                <!--<select id="select-tag-list"></select>-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    </div>
+                    <button class="create-pull-req">New pull request</button>
+                    <div class="btn-for-files">
+                        <button>Create new file</button>
+                        <button>Upload files</button>
+                        <button>Find file</button>
+                    </div>
+                    <button class="clone-btn">Clone or download</button>
+                </div>
+                <div class="latest-commit">
+                    <img src="#" alt="profile-pic">
+                    <span>KnowRe</span>
+                    <span>Quest 02 added constraint</span>
+                    <span class="latest-commit-time">Latest commit 8a3080e on 7 Aug 2016</span>
+                </div>
+                <table class="folder-lists">
+                    <tbody>
+                    <tr class="folder-list">
+                        <td><img src="#" alt="folder-icon"></td>
+                        <td class="folder-title">Part 0. git/Quest 00. Hello, git</td>
+                        <td class="commit-msg">Part 2 finished</td>
+                        <td class="commit-date">2years ago</td>
+                    </tr>
+                    <tr class="folder-list">
+                        <td><img src="#" alt="folder-icon"></td>
+                        <td class="folder-title">Part 1. HTML & CSS</td>
+                        <td class="commit-msg">Quest 02 added constraint</td>
+                        <td class="commit-date">2years ago</td>
+                    </tr>
+                    <tr class="folder-list">
+                        <td><img src="#" alt="md-icon"></td>
+                        <td class="file-title">README.md</td>
+                        <td class="commit-msg">Fix: Removed advertisement</td>
+                        <td class="commit-date">2years ago</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="file-content">
+                    <div class="content-head">
+                        <img src="#" alt="file-icon">
+                        <span>README.md</span>
+                    </div>
+                    <div class="content-body">
+                        KnowRe web development curriculum 2018
+                    </div>
+                </div>
+            </section>
+        </section>
 
-		<footer>
-			<ul class="github-operation-related-rules">
-				<li>© 2018 GitHub, Inc.</li>
-				<li><a href="#">Terms</a></li>
-				<li><a href="#">Privacy</a></li>
-				<li><a href="#">Security</a></li>
-				<li><a href="#">Status</a></li>
-				<li><a href="#">Help</a></li>
-			</ul>
-			<a href="#"><img src="#" alt="github icon"></a>
-			<ul class="github-info">
-				<li><a href="#">Contact GitHub</a></li>
-				<li><a href="#">API</a></li>
-				<li><a href="#">Training</a></li>
-				<li><a href="#">Shop</a></li>
-				<li><a href="#">Blog</a></li>
-				<li><a href="#">About</a></li>
-			</ul>
-		</footer>
-	</body>
+        <footer>
+            <ul class="github-operation-related-rules">
+                <li>© 2018 GitHub, Inc.</li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Security</a></li>
+                <li><a href="#">Status</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+            <a href="#"><img src="#" alt="github icon"></a>
+            <ul class="github-info">
+                <li><a href="#">Contact GitHub</a></li>
+                <li><a href="#">API</a></li>
+                <li><a href="#">Training</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </footer>
+    </body>
 </html>
 
 
