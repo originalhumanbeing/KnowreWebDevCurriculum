@@ -9,19 +9,20 @@ html {
     font-family: sans-serif;
     color: #24292e;
     height: 100%;
-    display: grid;
-    grid-template-columns: 10% 1fr 10%;
-    grid-template-rows: 10% 1fr 10%;
-    grid-template-areas:
-            "header header header"
-            "main main main"
-            "footer footer footer";
+    /*display: grid;*/
+    /*grid-template-columns: 10% 1fr 10%;*/
 }
 
 body {
     background: #ffffff;
     font-size: 14px;
-    grid-column-start: 2;
+    /*grid-column-start: 2;*/
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
+    grid-template-areas:
+        "header header header"
+        "main main main"
+        "footer footer footer";
 }
 
 ul, li {
@@ -37,13 +38,52 @@ label {
     display: none;
 }
 
+.header-wrapper {
+    grid-column-start: 1;
+    grid-area: header;
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
+    background: #24292e;
+}
+
 /*네비 부분 헤더*/
 .header {
-    background: #24292e;
     color: rgba(255,255,255,0.75);
-    /*grid-area: header;*/
     display: flex;
     align-items: center;
+    padding: 12px;
+    grid-column-start: 2;
+}
+
+.header * {
+    margin-right: 5px;
+    color: hsla(0,0%,100%,0.75);
+}
+
+#search1 {
+    width: 100px;
+    height: 25px;
+    border: 1px white;
+    border-radius: 5px 0 0 5px;
+    background: white;
+    padding: 8px;
+    color: #24292e;
+    margin-right: 1px;
+}
+
+#search2 {
+    width: 200px;
+    height: 25px;
+    border: 1px white;
+    border-radius: 0 5px 5px 0;
+    background: white;
+    padding: 8px;
+    color: #24292e;
+}
+
+.main {
+    grid-area: main;
+    display: grid;
 }
 
 .menu-in-header {
@@ -53,66 +93,304 @@ label {
 
 .icon-menu-in-header {
     display: flex;
-    flex-grow: 0.5;
+    margin-right: 0;
 }
 
-.main {
-    background: cornflowerblue;
-    /*grid-area: main;*/
+.icon-menu-in-header svg {
+    margin-right: 0;
+}
+
+.icon-menu-in-header path {
+    color: hsla(0,0%,100%,0.75);
+}
+
+.main-header-wrapper {
+    background: #fafbfc;
+    grid-column-start: 1;
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
+    border-bottom: 1px solid rgba(27,31,35,0.2);
 }
 
 .main-header {
     display: flex;
     flex-wrap: wrap;
+    padding-top: 12px;
+    grid-column-start: 2;
 }
 
 .main-header h1 {
-    flex-basis: 600px;
+    flex-basis: 500px;
+    font-weight: 500;
+    margin: 5px;
+}
+
+.main-header h1 svg {
+    margin-right: 3px;
 }
 
 .repo-info-menu {
-    flex-basis: 300px;
     display: flex;
-    /*float: right;*/
+    margin: 5px 0 5px auto;
+}
+
+.repo-info-menu button {
+    background: #eff3f6;
+    color: #24292e;
+    border: 1px solid rgba(27,31,35,0.2);
+    border-radius: 3px 0 0 3px;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.repo-info-menu button svg {
+    vertical-align: sub;
+}
+
+.repo-info-menu a {
+    display: inline-block;
+    background: white;
+    color: #24292e;
+    border: 1px solid rgba(27,31,35,0.2);
+    border-radius: 0 3px 3px 0;
+    padding: 2px 5px 0 5px;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 500;
+    float: right;
+    margin-right: 5px;
 }
 
 .repo-menu {
     display: flex;
 }
 
+.repo-menu svg {
+    vertical-align: text-top;
+}
+
+.repo-menu a {
+    display: inline-block;
+    color: #24292e;
+    line-height: 24px;
+    float: right;
+    margin-right: 5px;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
 /*메인 중앙 쪽 메뉴들*/
+
+.main-detail-wrapper {
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
+}
+
+.main-detail {
+    grid-column-start: 2;
+}
+
+.main-detail h2 {
+    margin: 15px 5px;
+}
+
 .repo-status-menu {
     display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid rgba(27,31,35,0.2);
+    border-bottom: 8px solid red;
+    border-radius: 3px;
+    background: #fafbfc;
+}
+
+.repo-status-menu a {
+    color: #24292e;
+    font-weight: 600;
+}
+
+.repo-status-menu svg {
+    vertical-align: sub;
 }
 
 .repo-nav {
     display: flex;
+    margin: 10px 0;
+}
+
+.repo-nav button {
+    background: #eff3f6;
+    color: #24292e;
+    border: 1px solid rgba(27,31,35,0.2);
+    border-radius: 3px;
+    padding: 0 15px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 25px;
+}
+
+.select-branch-group {
+    margin-right: 5px;
 }
 
 .btn-for-files {
-    margin-left: 450px;
+    margin: 0 5px 0 auto;
 }
 
-.latest-commit-time {
-    display: inline-block;
-    margin-left: 360px;
+.btn-for-files button {
+    float: left;
+}
+
+.btn-for-files button::after {
+    content: "";
+    clear-after: both;
+}
+
+.btn-for-files button:first-child {
+    border-radius: 3px 0 0 3px;
+}
+
+.btn-for-files button:nth-child(even) {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+
+.btn-for-files button:last-child {
+    border-radius: 0 3px 3px 0;
+}
+
+.repo-nav  .clone-btn {
+    background: #28a745;
+    color: #fff;
+}
+
+.latest-commit {
+    background: #f1f8ff;
+    border: 1px solid #c8e1ff;
+    border-radius: 3px 3px 0 0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.latest-commit img {
+    margin-right: 5px;
+    vertical-align: sub;
+}
+
+.latest-commit div span:first-of-type {
+    font-weight: 600;
 }
 
 /*메인 중앙 - 커밋 리스트*/
-.folder-lists {
+.folder-list {
+    color: #6a737d;
+    font-weight: 500;
+    border: 1px solid rgba(27,31,35,0.2);
+    border-top: 0;
+}
+
+.folder-list:last-child {
+    border-radius: 0 0 3px 3px;
+}
+
+.folder-list > span {
+    display: inline-block;
+    width: 380px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 30px;
+    padding: 10px 0 5px 0;
+}
+
+.folder-list > span:last-child {
+    margin-right: 0;
+    margin-left: 18px;
+}
+
+.folder-list .commit-msg {
+    width: 40%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.folder-list .commit-date {
+    width: auto;
+}
+
+.folder-lists img {
+    margin: 0 5px 0 10px;
+    vertical-align: sub;
+}
+
+.file-content {
+    /*background: #f6f8fa;*/
+    margin: 10px 0;
+    border: 1px solid rgba(27,31,35,0.2);
+    border-radius: 3px;
+}
+
+.content-head {
+    background: #f6f8fa;
+    padding: 8px 0;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(27,31,35,0.2);
+}
+
+.content-head img {
+    vertical-align: sub;
+    margin: 0 5px 0 10px;
+}
+
+.content-body {
+    padding: 30px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.content-body::after {
+    display: block;
+    content: "";
     width: 100%;
+    height: 1px;
+    background: rgba(27,31,35,0.2);
+    margin-top: 5px;
 }
 
 footer {
-    background: yellowgreen;
-    /*grid-area: footer;*/
+    grid-area: footer;
     display: flex;
+    justify-content: space-between;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    margin-top: 10px;
+}
+
+footer ul {
+    padding: 15px 0;
+}
+
+footer li {
+    color: #6a737d;
+}
+
+footer img {
+    margin: 15px 100px 0 100px;
 }
 
 .github-operation-related-rules {
     display: flex;
+    justify-content: space-between;
+    flex-grow: 2;
 }
 
 .github-info {
     display: flex;
+    justify-content: space-between;
+    flex-grow: 2;
 }
