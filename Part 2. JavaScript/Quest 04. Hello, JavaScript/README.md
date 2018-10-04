@@ -19,10 +19,52 @@
 ## Checklist
 * 자바스크립트는 버전별로 어떻게 변화하고 발전해 왔을까요?
   * 자바스크립트의 버전들을 가리키는 ES5, ES6, ES2016, ES2017 등은 무엇을 이야기할까요?
+    * 넷스케이프에서 자바스크립트를 발표한 후, MS사에서 JScript라는 이름으로 동일한 프로그래밍 언어를 발표하자
+    자사의 자바스크립트를 표준 언어로 규격화하기 위한 작업을 시작했다, 이때 표준화 과정을 진행한 기관명이 ECMA.
+    하여 붙여진 이름으로 ES~는 자바스크립트의 스펙을 말한다.
+    * ES5
+      * 배열과 관련된 메소드 추가
+        * `forEach`, `map`, `filter`, `reduce`, `some`, `every`와 같은 순환 메소드가 추가됨
+        * 반복 횟수 및 조건 등을 잘못 입력하는 등의 실수를 줄여줌
+      * 객체와 관련된 메소드 추가
+        * `Object.create()`, `Object.assign()`, getter, setter 등을 통해 프로퍼티 설정이 가능해짐 
+      * strict 모드 추가
+        * 문법을 보다 strict하게 체크하여 기존에는 넘어가던 잘못된 것도 에러로 뿜음, 이를 통해 실수와 오류를 줄여주고 최적화 작업에도 긍정적인 영향을 줌
+        * 선언되지 않은 변수에 값 할당할 경우, 전역 변수 생성을 하는 것이 아닌 Reference Error 뿜음
+        * 읽기 전용, 혹은 확장 불가 프로퍼티를 변경하려고 할 경우, Type Error 뿜음
+        * 중복된 속성명 사용할 경우, 8진 구문 사용할 경우에는 Syntax Error
+      * Lexical Environment 추가
+      * `bind()` 메소드 추가: this를 강제로 원 함수에 묶어줌
+      * JSON 사용: XML 대신 JSON을 통신에 주로 사용함
+    * ES6
+      * ES5 이후 7년 간의 공백기가 있었기 때문에 큰 변화가 있었음
+      * arrow function 도입: 상위 스코프를 가리킴
+      * 블록 단위 스코프의 변수 도입 (const, let)
+      * Classes, Modules 추가
+      * 콜백 지원 방지 차원에서 Promise 추가
+      * rest 파라미터, spread 연산자, default 파라미터로 할당을 보다 쉽게 할 수 있게 됨
+      * weakmap: 키가 약하게 참조되는 키/값 쌍의 컬렉션
+      * 템플릿 리터럴
+      * Generator  
+      * 참고. [es6 문법 변화](http://itstory.tk/entry/JavaScript-ES6-%EB%AC%B8%EB%B2%95-%EC%A0%95%EB%A6%AC)
+    * ES2016
+      * 배열과 관련된 메소드 추가
+        *  `Array.includes`: 이 배열에 네가 있니?
+      * 제곱연산자 도입 `**`
+    * ES2017
+      * Promise 대신 async/await 함수 도입
+        * 참고. [async/await 문법 소개](https://www.zerocho.com/category/ECMAScript/post/58d142d8e6cda10018195f5a)
+      * 객체와 관련된 메소드 추가
+        * `Object.values(obj)`, `Object.keys(obj)`
 * 웹 브라우저의 자바스크립트 콘솔은 어떻게 사용할까요?
+  * 로그를 찍어볼 수 있음: 오류, 할당된 값, 호출 시점 등 확인해보며 디버깅도 가능
   * 웹 브라우저(Chrome)에서 자바스크립트 콘솔을 띄우는 단축키는 무엇인가요?
+    * `Command` + `Option` + `i`
 * `let`를 이용하여 변수를 선언하는 것과 `const`를 이용하여 변수를 선언하는 것은 어떻게 다를까요?
+  * `let`은 재할당이 가능하지만 `const`는 재할당이 불가능함 (상수 개념)
   * `var`를 이용하여 선언하는 방법은 어떻게 다를까요?
+    * `var`는 함수 레벨 스코프를 갖고, `let`, `const`는 블록 레벨 스코프를 갖는다. 즉, 특정 코드 블록 내에서 선언된 변수는 해당 블록 내에서만 유효하며
+    외부에서는 참조할 수 없다. 
 * 자바스크립트의 익명 함수는 무엇인가요?
   * 자바스크립트의 Arrow function은 무엇일까요?
 
