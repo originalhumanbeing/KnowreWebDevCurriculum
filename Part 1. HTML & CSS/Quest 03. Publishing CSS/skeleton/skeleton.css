@@ -278,9 +278,9 @@ label {
     font-size: 13px;
 }
 
-.latest-commit img {
-    margin-right: 5px;
+.latest-commit svg {
     vertical-align: sub;
+    margin: 0 5px 0 0;
 }
 
 .latest-commit div span:first-of-type {
@@ -323,13 +323,13 @@ label {
     width: auto;
 }
 
-.folder-lists img {
-    margin: 0 5px 0 10px;
+
+.folder-lists svg {
     vertical-align: sub;
+    margin: 10px 5px 0 10px;
 }
 
 .file-content {
-    /*background: #f6f8fa;*/
     margin: 10px 0;
     border: 1px solid rgba(27,31,35,0.2);
     border-radius: 3px;
@@ -337,14 +337,14 @@ label {
 
 .content-head {
     background: #f6f8fa;
-    padding: 8px 0;
+    padding: 5px 0;
     font-weight: 600;
     border-bottom: 1px solid rgba(27,31,35,0.2);
 }
 
-.content-head img {
+.content-head svg {
     vertical-align: sub;
-    margin: 0 5px 0 10px;
+    margin: 10px 5px 0 10px;
 }
 
 .content-body {
