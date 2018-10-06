@@ -1,1 +1,13 @@
 /* TODO: 자유롭게 바탕화면 시스템의 CSS를 만들어 보세요! */
+
+.desktop {
+    background: #28a745;
+}
+
+.icon {
+    background: #0366d6;
+}
+
+.folder {
+    background: darkolivegreen;
+}
