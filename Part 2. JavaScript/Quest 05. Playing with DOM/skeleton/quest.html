@@ -36,11 +36,27 @@
 			let row1Squares = document.querySelectorAll('.row1 .square');
 			for(let node of row1Squares) {
 				/* TODO: node 변수를 어떻게 조작해야 할까요? */
+                node.onclick = function() { changeBackgroundColor() };
+                function changeBackgroundColor() {
+                    if(node.style.background === 'yellow') {
+                        node.style.background = 'white';
+                    } else {
+                        node.style.background = 'yellow';
+                    }
+                }
 			}
 
 			let row2Squares = document.querySelectorAll('.row2 .square');
 			for(let node of row2Squares) {
 				/* TODO: node 변수를 어떻게 조작해야 할까요? */
+                node.onclick = function() { changeClass() };
+			    function changeClass() {
+			        if(node.className && node.className === 'square') {
+			            node.classList.add("enabled");
+                    } else {
+			            node.classList.remove("enabled");
+                    }
+                }
 			}
 		</script>
 	</body>
