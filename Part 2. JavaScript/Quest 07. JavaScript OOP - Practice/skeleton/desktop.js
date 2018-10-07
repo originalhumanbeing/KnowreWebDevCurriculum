@@ -1,17 +1,28 @@
 class Desktop {
     /* TODO: Desktop 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(){
-        // 이름, 위치
+    constructor(name, x, y){
+        // 이름, 위치, 소유자
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.owner = owner;
     }
 
-    makeNewIcon(){} // 아이콘 생성
+    makeNewIcon(){
+
+    } // 아이콘 생성
     sort(){} // 정렬
 };
 
 class Icon {
     /* TODO: Icon 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(){
-        // 이름, 위치, 종류, 아이콘 모양 크기, 용량, 생성일시, 변경일시, 생성자명
+    constructor(name, x, y, width, height){
+        // 이름, 위치, 아이콘 모양 크기
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     open(){} // 더블클릭하면 창 오픈
@@ -21,10 +32,11 @@ class Icon {
     copy(){} // 복사
 };
 
-class Folder {
+class Folder extends Icon {
     /* TODO: Folder 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(){
+    constructor(name, x, y, width, height){
         // 이름
+        super(name, x, y, width, height);
     }
 
     showContents(){} // 폴더 내 컨텐츠 띄우기
@@ -33,8 +45,10 @@ class Folder {
 
 class Window {
     /* TODO: Window 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(){
+    constructor(width, height){
         // 창(화면)의 크기, 높이
+        this.width = width;
+        this.height = height;
     }
 
     close(){} // 창 닫기
