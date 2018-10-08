@@ -28,11 +28,11 @@
 
         addItem() {
             for (let i = 0; i < this.iconCount; i++) {
-                let icon = new Icon(this.desktopNode, i + 1);
+                new Icon(this.desktopNode, i + 1);
             }
 
             for (let i = 0; i < this.folderCount; i++) {
-                let folder = new Folder(this.desktopNode, i + 1, this.iconCount + i + 1);
+                new Folder(this.desktopNode, i + 1, this.iconCount + i + 1);
             }
         }
     }
@@ -49,7 +49,7 @@
             let node = document.createElement("div");
             node.classList.add('icon');
             node.innerText = this.name + this.num;
-            node.setAttribute('style', `position: absolute; top: 20px; left: ${(100 * (this.num - 1) + (20 * this.num))}px;`);
+            node.setAttribute('style', `top: 20px; left: ${(100 * (this.num - 1) + (20 * this.num))}px;`);
             return node;
         }
     }
@@ -67,7 +67,7 @@
             let node = document.createElement("div");
             node.classList.add('folder');
             node.innerText = this.name + this.num + `(${this.totalNum})`;
-            node.setAttribute('style', `position: absolute; top: 20px; left: ${(100 * (this.totalNum - 1) + (20 * this.totalNum))}px;`);
+            node.setAttribute('style', `top: 20px; left: ${(100 * (this.totalNum - 1) + (20 * this.totalNum))}px;`);
             return node;
         }
     }
