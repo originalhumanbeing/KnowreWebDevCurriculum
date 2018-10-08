@@ -25,3 +25,7 @@
   * Drag & Drop API를 사용하지 말고, 실제 마우스 이벤트(mouseover, mousedown, mouseout 등)를 사용하여 구현해 보세요!
 * 이번 퀘스트에서는 실제 바탕화면 코드를 구현해야 합니다.
   * 위의 Checklist에 있는 변경사항을 생각한다면 어떤 식으로 구현해야 할까요?
+
+## 참고한 링크들
+* 
+* [screen/client/page좌표 차이](https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y)
