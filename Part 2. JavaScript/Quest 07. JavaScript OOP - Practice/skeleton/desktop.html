@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./desktop.css">
-    <!--<script src="./desktop.js"></script>-->
+    <script src="./desktop.js"></script>
 </head>
 <body>
-<section class="desktop"></section>
-
+    <section class="desktop"></section>
 </body>
 </html>
 
@@ -20,96 +19,5 @@
     2. 더블클릭 - 오픈
     3. 클로즈
     */
-
-    document.addEventListener("DOMContentLoaded", () => new Desktop(10, 13));
-
-    class Desktop {
-        constructor(iconCount, folderCount) {
-            this.iconCount = iconCount;
-            this.folderCount = folderCount;
-            this.desktopNode = document.querySelector('.desktop');
-            this.addItem();
-        }
-
-        addItem() {
-            for (let i = 0; i < this.iconCount; i++) {
-                new Icon(this.desktopNode, i + 1);
-            }
-
-            for (let i = 0; i < this.folderCount; i++) {
-                new Folder(this.desktopNode, i + 1, this.iconCount + i + 1);
-            }
-        }
-    }
-
-    class Icon {
-        constructor(desktopNode, num) {
-            this.num = num;
-            this.name = 'icon';
-            let iconNode = this.createIconNode();
-            desktopNode.appendChild(iconNode);
-        }
-
-        createIconNode() {
-            let node = document.createElement("div");
-            node.classList.add('icon');
-            node.innerText = this.name + this.num;
-            node.setAttribute('style', `top: 20px; left: ${(100 * (this.num - 1) + (20 * this.num))}px;`);
-            // node.addEventListener("mousedown", dragNode);
-            // node.addEventListener("mouseup", locateNode);
-            return node;
-        }
-    }
-
-    class Folder {
-        constructor(desktopNode, num, totalNum) {
-            this.num = num;
-            this.name = 'folder';
-            this.totalNum = totalNum;
-            let folderNode = this.createFolderNode();
-            desktopNode.appendChild(folderNode);
-        }
-
-        createFolderNode() {
-            let node = document.createElement("div");
-            node.classList.add('folder');
-            node.innerText = this.name + this.num + `(${this.totalNum})`;
-            node.setAttribute('style', `top: 20px; left: ${(100 * (this.totalNum - 1) + (20 * this.totalNum))}px;`);
-            node.addEventListener('mousedown', ()=> {
-                isClicked = true;
-            });
-            node.addEventListener("mouseup", ()=> {
-                isClicked = false;
-            });
-            node.addEventListener("mousemove", (e)=> {
-                if(isClicked) {
-                    let newX = e.clientX;
-                    let newY = e.clientY;
-
-                    e.target.setAttribute('style', `position: absolute; left: ${newX-50}px; top: ${newY-50}px`);
-                }
-            });
-            return node;
-        }
-    }
-
-    let isClicked = false;
-
-    // function dragNode(e) {
-    //     console.log('이벤트');
-    //
-    //     e.target.addEventListener('mousemove', function() {
-    //         console.log('mousemove 탄다');
-    //
-    //         let newX = e.clientX;
-    //         let newY = e.clientY;
-    //         console.log('새 위치', newX, newY);
-    //
-    //         e.target.setAttribute('style', `position: absolute; left: ${newX}px; top: ${newY}px`);
-    //         if(e.target.onmouseup){
-    //             e.target.setAttribute('style', `position: absolute; left: ${newX}px; top: ${newY}px`);
-    //         }
-    //     })
-    // }
-
+    document.addEventListener("DOMContentLoaded", () => new Desktop(1, 2));
 </script>

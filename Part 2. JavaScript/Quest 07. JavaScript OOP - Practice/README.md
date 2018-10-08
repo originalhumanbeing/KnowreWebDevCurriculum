@@ -12,7 +12,9 @@
 * 더 좋은 코드를 만들려면 어떻게 해야 할까요?
 * 더 좋은 코드는 끊임없이 바뀌는 요구사항들에 겪는 고통을 최소한으로 줄일 수 있는 코드입니다.
   * 만약 완성된 코드에서 두 개의 데스크탑을 따로 두어 실행되도록 하려면 어떻게 해야 할까요?
+    * desktop도 id를 두고/ 데스크탑, 아이콘, 폴더 모두 어떤 desktop 아래에 append할 것인지 구분한다
   * 만약 시작할 때 주어지는 세팅(한 개의 일반 아이콘, 두 개의 폴더 아이콘)을 자유롭게 바꾸고 싶다면 어떻게 해야 할까요?
+    * desktop 노드에 붙일 때, param으로 받고 그만큼 반복문 돌며 생성
   * 아이콘의 모양과 크기가 언제든지 바뀔 수 있다면 어떻게 해야 할까요?
 
 ## Quest
@@ -27,5 +29,6 @@
   * 위의 Checklist에 있는 변경사항을 생각한다면 어떤 식으로 구현해야 할까요?
 
 ## 참고한 링크들
-* 
+* [JS Event Basic](https://flaviocopes.com/javascript-events/) 
 * [screen/client/page좌표 차이](https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y)
+

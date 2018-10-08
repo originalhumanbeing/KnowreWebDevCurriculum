@@ -1,56 +1,105 @@
 class Desktop {
-    /* TODO: Desktop 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(name, x, y){
-        // 이름, 위치, 소유자
-        this.name = name;
-        this.x = x;
-        this.y = y;
-        this.owner = owner;
+    constructor(iconCount, folderCount) {
+        this.iconCount = iconCount;
+        this.folderCount = folderCount;
+        this.desktopNode = document.querySelector('.desktop');
+        this.addItem();
     }
 
-    makeNewIcon(){
+    addItem() {
+        for (let i = 0; i < this.iconCount; i++) {
+            new Icon(this.desktopNode, i + 1);
+        }
 
-    } // 아이콘 생성
-    sort(){} // 정렬
-};
+        for (let i = 0; i < this.folderCount; i++) {
+            new Folder(this.desktopNode, i + 1, this.iconCount + i + 1);
+        }
+    }
+}
 
 class Icon {
-    /* TODO: Icon 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(name, x, y, width, height){
-        // 이름, 위치, 아이콘 모양 크기
-        this.name = name;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    constructor(desktopNode, num) {
+        this.num = num;
+        this.name = 'icon';
+        let iconNode = this.createIconNode();
+        desktopNode.appendChild(iconNode);
     }
 
-    open(){} // 더블클릭하면 창 오픈
-    drag(){} // 드래그하여 움직이기
-    delete(){} // 아이콘 삭제
-    changeName(){} // 이름 변경
-    copy(){} // 복사
-};
+    createIconNode() {
+        let node = document.createElement("div");
+        node.classList.add('icon');
+        node.innerText = this.name + this.num;
+        node.setAttribute('style', `top: 20px; left: ${(100 * (this.num - 1) + (20 * this.num))}px;`);
+        addDragEventListener(node);
+        return node;
+    }
+}
 
-class Folder extends Icon {
-    /* TODO: Folder 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(name, x, y, width, height){
-        // 이름
-        super(name, x, y, width, height);
+class Folder {
+    constructor(desktopNode, num, totalNum) {
+        this.num = num;
+        this.name = 'folder';
+        this.totalNum = totalNum;
+        let folderNode = this.createFolderNode();
+        desktopNode.appendChild(folderNode);
     }
 
-    showContents(){} // 폴더 내 컨텐츠 띄우기
-    changeDisplay(){} // 폴더 내 컨텐츠 표현 방식 변경
-};
+    createFolderNode() {
+        let node = document.createElement("div");
+        node.classList.add('folder');
+        node.innerText = this.name + this.num + ` (${this.totalNum})`;
+        node.setAttribute('id', `f${this.totalNum}`);
+        node.setAttribute('style', `top: 20px; left: ${(100 * (this.totalNum - 1) + (20 * this.totalNum))}px;`);
+        addDragEventListener(node);
+        node.addEventListener('dblclick', ()=> {
+            isDbClicked = !isDbClicked;
+            if(isDbClicked) {
+                new Window(node);
+            } else {
+                let oldWindow = document.querySelector(`#f${this.totalNum} .window`);
+                oldWindow.remove();
+            }
+        });
+        return node;
+    }
+
+
+}
 
 class Window {
-    /* TODO: Window 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
-    constructor(width, height){
-        // 창(화면)의 크기, 높이
-        this.width = width;
-        this.height = height;
+    constructor(folderNode) {
+        this.folderNode = folderNode;
+        this.name = 'window';
+        let windowNode = this.createWindowNode();
+        this.folderNode.appendChild(windowNode);
     }
 
-    close(){} // 창 닫기
-    resize(){} // 창 사이즈 조절
-};
+    createWindowNode() {
+        let node = document.createElement("div");
+        node.classList.add('window');
+        node.innerText = this.name + ' ' + this.folderNode.innerHTML;
+        node.setAttribute('style', 'position: absolute; z-index: 100;');
+        addDragEventListener(node);
+        isDbClicked = true;
+        return node;
+    }
+}
+
+let isClicked = false;
+let isDbClicked = false;
+
+function addDragEventListener(node) {
+    node.addEventListener('mousedown', () => {
+        isClicked = true;
+    });
+    node.addEventListener("mouseup", () => {
+        isClicked = false;
+    });
+    node.addEventListener("mousemove", (e)=> {
+        if(isClicked) {
+            let newX = e.clientX;
+            let newY = e.clientY;
+            e.target.setAttribute('style', `position: absolute; left: ${newX-50}px; top: ${newY-50}px;`);
+        }
+    });
+}
