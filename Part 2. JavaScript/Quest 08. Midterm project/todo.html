@@ -16,7 +16,8 @@
     /* 구현 목표
     1. input 창에 할 일을 적고 엔터치면 todo list에 추가된다 00
     2. 추가될 때: input에 쓴 내용과 앞에 checker가 같이 추가된다 00
-    5. 추가된 input을 클릭하면 내용을 수정할 수 있다
+    5. 추가된 input을 클릭하면 내용을 수정할 수 있다 00
+    7. 추가된 input을 삭제할 수도 있다
 
     3. checker를 누르면 line-through되면서 completed task가 된다
 
@@ -28,11 +29,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         new TodoInput();
     });
-
-    //  1. input 창에 할 일을 적고 엔터치면 todo list에 추가된다
-    // input에 key=enter event를 달고
-    // input을 찾아서, 그 안에 value를 찾고.
-    // value를 li element추가할 때, inner text로 넣어서 추가한다
 
     class TodoInput {
         constructor() {
@@ -74,10 +70,16 @@
             let todoCheckBox = document.createElement("input");
             todoCheckBox.classList.add("todoCheckBox");
             todoCheckBox.setAttribute('type', 'checkbox');
+            let deleteBtn = document.createElement("a");
+            deleteBtn.innerText = 'X';
+            deleteBtn.classList.add("deleteBtn");
+            deleteBtn.classList.add("hidden");
 
             todoItem.appendChild(todoCheckBox);
             todoItem.appendChild(todoItemValue);
             todoItem.appendChild(todoItemInput);
+            todoItem.appendChild(deleteBtn);
+
 
             let todoList = document.querySelector('.todoList');
             todoList.appendChild(todoItem);
@@ -112,6 +114,7 @@
                 })
             }
         }
+
         updateTodoItem(target) {
             target.classList.add('updating');
 
@@ -131,14 +134,17 @@
         }
 
         deleteTodoItem(target) {
-            // 지우려고 마우스 오버하면 x 표시가 옆에 생기고
-            // 엑스를 클릭하면
-            // 해당 아이템이 dom에서 remove되어야 함
-
             target.classList.add('deleting');
 
-            let spanTodo = document.querySelector('.deleting .todoItemValue');
+            let deleteBtn = document.querySelector('.deleting .deleteBtn');
+            deleteBtn.classList.remove('hidden');
 
+            deleteBtn.addEventListener('click', ()=> {
+                let todoList = document.querySelector('.todoList');
+                todoList.removeChild(target);
+            });
+
+            target.classList.remove('deleting');
         }
     }
 
