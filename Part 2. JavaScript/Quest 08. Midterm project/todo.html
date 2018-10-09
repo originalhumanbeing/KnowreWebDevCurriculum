@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Todo</title>
+    <link rel="stylesheet" href="./todo.css">
+    <script src="./todo.js"></script>
+</head>
+<body>
+<h1>Todo Todo</h1>
+<input id="todoInput" type="text" placeholder="What needs to be done?">
+<ul class="todoList"></ul>
+</body>
+</html>
+<script>
+    /* 구현 목표
+    1. input 창에 할 일을 적고 엔터치면 todo list에 추가된다 00
+    2. 추가될 때: input에 쓴 내용과 앞에 checker가 같이 추가된다 00
+    5. 추가된 input을 클릭하면 내용을 수정할 수 있다
+
+    3. checker를 누르면 line-through되면서 completed task가 된다
+
+    4. todo task/completed task가 있고, 이 count가 바뀐다
+
+    6. 전체 저장/ 전체 clear를 누르면 localStorage에 저장되어서 다음에 창을 열어도 볼 수 있다
+    * */
+
+    document.addEventListener('DOMContentLoaded', () => {
+        new TodoInput();
+    });
+
+    //  1. input 창에 할 일을 적고 엔터치면 todo list에 추가된다
+    // input에 key=enter event를 달고
+    // input을 찾아서, 그 안에 value를 찾고.
+    // value를 li element추가할 때, inner text로 넣어서 추가한다
+
+    class TodoInput {
+        constructor() {
+            this.addTodo();
+        }
+
+        addTodo() {
+            let todoInput = document.querySelector('#todoInput');
+
+            todoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    let todoContent = todoInput.value;
+                    new TodoItem(todoContent);
+                    todoInput.value = '';
+                }
+            })
+        }
+    }
+
+    class TodoItem {
+        constructor(todoContent) {
+            this.todoContent = todoContent;
+            this.createTodoItem(this.todoContent);
+            this.addClickEventListener();
+            this.addMouseOverEventListener();
+        }
+
+        createTodoItem(todoContent) {
+            let todoItem = document.createElement("li");
+            todoItem.classList.add("todoItem");
+            let todoItemValue = document.createElement("span");
+            todoItemValue.classList.add("todoItemValue");
+            todoItemValue.innerText = todoContent;
+            let todoItemInput = document.createElement("input");
+            todoItemInput.classList.add("todoItemInput");
+            todoItemInput.classList.add("hidden");
+            todoItemInput.setAttribute('placeholder', `${todoContent}`);
+            todoItemInput.setAttribute('type', 'text');
+            let todoCheckBox = document.createElement("input");
+            todoCheckBox.classList.add("todoCheckBox");
+            todoCheckBox.setAttribute('type', 'checkbox');
+
+            todoItem.appendChild(todoCheckBox);
+            todoItem.appendChild(todoItemValue);
+            todoItem.appendChild(todoItemInput);
+
+            let todoList = document.querySelector('.todoList');
+            todoList.appendChild(todoItem);
+        }
+
+        addClickEventListener() {
+            let todoItems = document.querySelectorAll('.todoItem');
+            for(let todoItem of todoItems) {
+                todoItem.addEventListener('click', (e)=> {
+                    if(e.target.className === 'todoItem') {
+                        // li태그일때
+                        this.updateTodoItem(e.target);
+                    } else if(e.target.className === 'todoItemValue') {
+                        // span 안에 span일 때
+                        this.updateTodoItem(e.target.parentNode);
+                    }
+                })
+            }
+        }
+
+        addMouseOverEventListener() {
+            let todoItems = document.querySelectorAll('.todoItem');
+            for(let todoItem of todoItems) {
+                todoItem.addEventListener('mouseover', (e)=> {
+                    if(e.target.className === 'todoItem') {
+                        // li태그일때
+                        this.deleteTodoItem(e.target);
+                    } else if(e.target.className === 'todoItemValue') {
+                        // span 안에 span일 때
+                        this.deleteTodoItem(e.target.parentNode);
+                    }
+                })
+            }
+        }
+        updateTodoItem(target) {
+            target.classList.add('updating');
+
+            let spanTodo = document.querySelector('.updating .todoItemValue');
+            spanTodo.classList.add('hidden');
+            let inputTodo = document.querySelector('.updating .todoItemInput');
+            inputTodo.classList.remove('hidden');
+            inputTodo.addEventListener('keypress', (e)=> {
+                if(e.key === 'Enter') {
+                    spanTodo.innerText = inputTodo.value;
+                    spanTodo.classList.remove('hidden');
+                    inputTodo.classList.add('hidden');
+                }
+            });
+
+            target.classList.remove('updating');
+        }
+
+        deleteTodoItem(target) {
+            // 지우려고 마우스 오버하면 x 표시가 옆에 생기고
+            // 엑스를 클릭하면
+            // 해당 아이템이 dom에서 remove되어야 함
+
+            target.classList.add('deleting');
+
+            let spanTodo = document.querySelector('.deleting .todoItemValue');
+
+        }
+    }
+
+    class TodoCheckBox {
+        constructor() {
+
+        }
+
+        completeTodoItem() {
+
+        }
+    }
+
+    class TodoCount {
+        constructor() {
+
+        }
+
+    }
+
+</script>
