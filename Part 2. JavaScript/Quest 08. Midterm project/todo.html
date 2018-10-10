@@ -17,9 +17,10 @@
     1. input 창에 할 일을 적고 엔터치면 todo list에 추가된다 00
     2. 추가될 때: input에 쓴 내용과 앞에 checker가 같이 추가된다 00
     5. 추가된 input을 클릭하면 내용을 수정할 수 있다 00
-    7. 추가된 input을 삭제할 수도 있다
+    7. 추가된 input을 삭제할 수도 있다 00
 
-    3. checker를 누르면 line-through되면서 completed task가 된다
+    3. checker를 누르면 line-through되면서 completed task가 된다 00
+    8. checker를 다시 누르면 completed task 마크가 사라진다
 
     4. todo task/completed task가 있고, 이 count가 바뀐다
 
@@ -29,6 +30,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         new TodoInput();
     });
+
+    let isClicked = false;
 
     class TodoInput {
         constructor() {
@@ -50,15 +53,14 @@
 
     class TodoItem {
         constructor(todoContent) {
-            this.todoContent = todoContent;
-            this.createTodoItem(this.todoContent);
-            this.addClickEventListener();
-            this.addMouseOverEventListener();
+            this.todoItem = this.getTodoItemDom(todoContent);
+            this.todoItem.classList.add("todoItem");
+            let todoList = document.querySelector('.todoList');
+            todoList.appendChild(this.todoItem);
         }
 
-        createTodoItem(todoContent) {
+        getTodoItemDom(todoContent) {
             let todoItem = document.createElement("li");
-            todoItem.classList.add("todoItem");
             let todoItemValue = document.createElement("span");
             todoItemValue.classList.add("todoItemValue");
             todoItemValue.innerText = todoContent;
@@ -80,40 +82,32 @@
             todoItem.appendChild(todoItemInput);
             todoItem.appendChild(deleteBtn);
 
+            todoItem.addEventListener('click', (e)=> {
+                if(e.target.className === 'todoItem') {
+                    // li 태그일때
+                    this.updateTodoItem(e.target);
+                } else if(e.target.className === 'todoItemValue') {
+                    // 안에 span일 때
+                    this.updateTodoItem(e.target.parentNode);
+                } else if(e.target.className === 'todoCheckBox') {
+                    // checkbox일 때
+                    e.target.classList.add('checked');
+                    new TodoCheckBox();
+                }
+            });
+            todoItem.addEventListener('mouseover', (e)=> {
+                if(e.target.className === 'todoItem') {
+                    // li태그일때
+                    this.deleteTodoItem(e.target);
+                } else if(e.target.className === 'todoItemValue') {
+                    // span 안에 span일 때
+                    this.deleteTodoItem(e.target.parentNode);
+                }
+            });
 
-            let todoList = document.querySelector('.todoList');
-            todoList.appendChild(todoItem);
+            return todoItem;
         }
 
-        addClickEventListener() {
-            let todoItems = document.querySelectorAll('.todoItem');
-            for(let todoItem of todoItems) {
-                todoItem.addEventListener('click', (e)=> {
-                    if(e.target.className === 'todoItem') {
-                        // li태그일때
-                        this.updateTodoItem(e.target);
-                    } else if(e.target.className === 'todoItemValue') {
-                        // span 안에 span일 때
-                        this.updateTodoItem(e.target.parentNode);
-                    }
-                })
-            }
-        }
-
-        addMouseOverEventListener() {
-            let todoItems = document.querySelectorAll('.todoItem');
-            for(let todoItem of todoItems) {
-                todoItem.addEventListener('mouseover', (e)=> {
-                    if(e.target.className === 'todoItem') {
-                        // li태그일때
-                        this.deleteTodoItem(e.target);
-                    } else if(e.target.className === 'todoItemValue') {
-                        // span 안에 span일 때
-                        this.deleteTodoItem(e.target.parentNode);
-                    }
-                })
-            }
-        }
 
         updateTodoItem(target) {
             target.classList.add('updating');
@@ -150,11 +144,23 @@
 
     class TodoCheckBox {
         constructor() {
-
+            this.changeTodoItemState();
         }
 
-        completeTodoItem() {
+        changeTodoItemState() {
+            let todoCheckBox = document.querySelector('.checked');
+            let checkedItem = todoCheckBox.parentNode;
 
+            checkedItem.classList.toggle('completed');
+            //
+            // let isCompleted = checkedItem.classList.contains('completed');
+            // if(todoCheckBox) {
+            //     checkedItem.classList.add('completed');
+            //     todoCheckBox.classList.remove('checked');
+            //     isCompleted = isCompleted;
+            // } else if(isCompleted && !todoCheckBox) {
+            //     checkedItem.classList.remove('completed');
+            // }
         }
     }
 
