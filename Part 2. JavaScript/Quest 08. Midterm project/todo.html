@@ -20,7 +20,7 @@
     7. 추가된 input을 삭제할 수도 있다 00
 
     3. checker를 누르면 line-through되면서 completed task가 된다 00
-    8. checker를 다시 누르면 completed task 마크가 사라진다
+    8. checker를 다시 누르면 completed task 마크가 사라진다 00
 
     4. todo task/completed task가 있고, 이 count가 바뀐다
 
@@ -53,6 +53,8 @@
         constructor(todoContent) {
             this.todoCheckBox = new TodoCheckBox();
             this.todoDeleteBtn = new TodoDeleteBtn();
+            this.todoContentBox = new TodoContentBox(todoContent);
+
             this.todoItem = this.createTodoItemDom(todoContent);
             this.todoItem.classList.add("todoItem");
 
@@ -60,56 +62,36 @@
             todoList.appendChild(this.todoItem);
         }
 
-        createTodoItemDom(todoContent) {
+        createTodoItemDom() {
             let todoItemDom = document.createElement("li");
 
-            let todoItemValue = document.createElement("span");
-            todoItemValue.classList.add("todoItemValue");
-            todoItemValue.innerText = todoContent;
-            let todoItemInput = document.createElement("input");
-            todoItemInput.classList.add("todoItemInput");
-            todoItemInput.classList.add("hidden");
-            todoItemInput.setAttribute('placeholder', `${todoContent}`);
-            todoItemInput.setAttribute('type', 'text');
-
             todoItemDom.appendChild(this.todoCheckBox.todoCheckBoxNode);
-            todoItemDom.appendChild(todoItemValue);
-            todoItemDom.appendChild(todoItemInput);
+            todoItemDom.appendChild(this.todoContentBox['todoOriginalBoxNode']);
+            todoItemDom.appendChild(this.todoContentBox['todoUpdateBoxNode']);
             todoItemDom.appendChild(this.todoDeleteBtn.todoDeleteBtnNode);
 
             todoItemDom.addEventListener('click', (e)=> {
+                let todoOriginalBox = this.todoContentBox['todoOriginalBoxNode'];
+                let todoUpdateBox = this.todoContentBox['todoUpdateBoxNode'];
+
                 if(e.target.className === 'todoItem') {
-                    // li 클릭시
-                    this.updateTodoItem(e.target);
-                } else if(e.target.className === 'todoItemValue') {
-                    // span 클릭시
-                    this.updateTodoItem(e.target.parentNode);
+                    todoOriginalBox.classList.add('hidden');
+                    todoUpdateBox.classList.remove('hidden');
+                } else if(e.target.className === 'todoOriginalBox') {
+                    todoOriginalBox.classList.add('hidden');
+                    todoUpdateBox.classList.remove('hidden');
                 }
             });
 
-            todoItemDom.addEventListener('mouseover', ()=> {
-                this.todoDeleteBtn.todoDeleteBtnNode.classList.toggle('hidden');
+            todoItemDom.addEventListener('mouseenter', ()=> {
+                this.todoDeleteBtn.todoDeleteBtnNode.classList.remove('hidden');
+            });
+
+            todoItemDom.addEventListener('mouseleave', ()=> {
+                this.todoDeleteBtn.todoDeleteBtnNode.classList.add('hidden');
             });
 
             return todoItemDom;
-        }
-
-        updateTodoItem(target) {
-            target.classList.add('updating');
-
-            let spanTodo = document.querySelector('.updating .todoItemValue');
-            spanTodo.classList.add('hidden');
-            let inputTodo = document.querySelector('.updating .todoItemInput');
-            inputTodo.classList.remove('hidden');
-            inputTodo.addEventListener('keypress', (e)=> {
-                if(e.key === 'Enter') {
-                    spanTodo.innerText = inputTodo.value;
-                    spanTodo.classList.remove('hidden');
-                    inputTodo.classList.add('hidden');
-                }
-            });
-
-            target.classList.remove('updating');
         }
     }
 
@@ -130,6 +112,47 @@
         }
     }
 
+    class TodoContentBox{
+        constructor(todoContent) {
+            this.todoContent = todoContent;
+            this.todoOriginalBoxNode = document.createElement("span");
+            this.todoUpdateBoxNode = document.createElement("input");
+            this.createTodoContentBoxNode(this.todoOriginalBoxNode, this.todoUpdateBoxNode);
+        }
+
+        createTodoContentBoxNode(todoOriginalBoxNode, todoUpdateBoxNode) {
+            todoOriginalBoxNode.classList.add("todoOriginalBox");
+            todoOriginalBoxNode.innerText = this.todoContent;
+            let todoOriginalBoxValue = todoOriginalBoxNode.innerText;
+            console.log('content값', this.todoContent);
+            // 위에서 todoContent를 계속 비우니까 계속 ''값이 들어가는 거야.
+
+            todoUpdateBoxNode.classList.add("todoUpdateBox");
+            todoUpdateBoxNode.classList.add("hidden");
+            todoUpdateBoxNode.setAttribute('placeholder', `${this.todoContent}`);
+            todoUpdateBoxNode.setAttribute('type', 'text');
+
+            todoUpdateBoxNode.addEventListener('keypress', (e)=> {
+                let updatedValue = e.target.value;
+                if(e.key === 'Enter' && updatedValue) {
+                    todoOriginalBoxNode.innerText = updatedValue;
+                    todoOriginalBoxValue = updatedValue;
+                    todoUpdateBoxNode.setAttribute('placeholder', `${updatedValue}`);
+                    todoUpdateBoxNode.value = '';
+                    todoOriginalBoxNode.classList.remove('hidden');
+                    todoUpdateBoxNode.classList.add('hidden');
+                } else if (e.key === 'Enter' && !updatedValue) {
+                    todoOriginalBoxNode.innerText = todoOriginalBoxValue;
+                    todoUpdateBoxNode.setAttribute('placeholder', `${todoOriginalBoxValue}`);
+                    todoOriginalBoxNode.classList.remove('hidden');
+                    todoUpdateBoxNode.classList.add('hidden');
+                }
+            });
+
+            return [todoOriginalBoxNode, todoUpdateBoxNode];
+        }
+    }
+
     class TodoDeleteBtn {
         constructor() {
             this.todoDeleteBtnNode = document.createElement("button");
@@ -141,10 +164,11 @@
             todoDeleteBtnNode.classList.add("deleteBtn");
             todoDeleteBtnNode.classList.add("hidden");
             todoDeleteBtnNode.addEventListener('click', ()=> {
+                console.log('삭제 버튼 눌렸습니다');
                 let todoList = document.querySelector('#todoList');
+                console.log('부모 요소', todoDeleteBtnNode.parentNode);
                 todoList.removeChild(todoDeleteBtnNode.parentNode);
             });
-
             return todoDeleteBtnNode;
         }
     }
