@@ -7,9 +7,9 @@
     <script src="./todo.js"></script>
 </head>
 <body>
-<h1>Todo Todo</h1>
-<input id="todoInput" type="text" placeholder="What needs to be done?">
-<ul id="todoList"></ul>
+    <h1>Todo Todo</h1>
+    <input id="todoInput" type="text" placeholder="What needs to be done?">
+    <ul id="todoList"></ul>
 </body>
 </html>
 <script>
@@ -22,13 +22,14 @@
     3. checker를 누르면 line-through되면서 completed task가 된다 00
     8. checker를 다시 누르면 completed task 마크가 사라진다 00
 
-    4. todo task/completed task가 있고, 이 count가 바뀐다
+    4. todo task/completed task가 있고, 이 count가 바뀐다 00
 
     6. 전체 저장/ 전체 clear를 누르면 localStorage에 저장되어서 다음에 창을 열어도 볼 수 있다
     * */
 
     document.addEventListener('DOMContentLoaded', () => {
         new TodoInput();
+        new Counter();
     });
 
     class TodoInput {
@@ -44,8 +45,9 @@
                     let todoContent = todoInput.value;
                     new TodoItem(todoContent);
                     todoInput.value = '';
+                    countTodoItems();
                 }
-            })
+            });
         }
     }
 
@@ -57,6 +59,7 @@
 
             this.todoItem = this.createTodoItemDom(todoContent);
             this.todoItem.classList.add("todoItem");
+            this.todoItem.classList.add("todo");
 
             let todoList = document.querySelector('#todoList');
             todoList.appendChild(this.todoItem);
@@ -106,8 +109,10 @@
             todoCheckBoxNode.setAttribute('type', 'checkbox');
             todoCheckBoxNode.addEventListener('click', ()=> {
                 todoCheckBoxNode.parentNode.classList.toggle('completed');
+                todoCheckBoxNode.parentNode.classList.toggle('todo');
+                countTodoItems();
+                countDoneItems();
             });
-
             return todoCheckBoxNode;
         }
     }
@@ -124,8 +129,6 @@
             todoOriginalBoxNode.classList.add("todoOriginalBox");
             todoOriginalBoxNode.innerText = this.todoContent;
             let todoOriginalBoxValue = todoOriginalBoxNode.innerText;
-            console.log('content값', this.todoContent);
-            // 위에서 todoContent를 계속 비우니까 계속 ''값이 들어가는 거야.
 
             todoUpdateBoxNode.classList.add("todoUpdateBox");
             todoUpdateBoxNode.classList.add("hidden");
@@ -164,20 +167,65 @@
             todoDeleteBtnNode.classList.add("deleteBtn");
             todoDeleteBtnNode.classList.add("hidden");
             todoDeleteBtnNode.addEventListener('click', ()=> {
-                console.log('삭제 버튼 눌렸습니다');
                 let todoList = document.querySelector('#todoList');
-                console.log('부모 요소', todoDeleteBtnNode.parentNode);
                 todoList.removeChild(todoDeleteBtnNode.parentNode);
+                countTodoItems();
+                countDoneItems();
             });
             return todoDeleteBtnNode;
         }
     }
 
-    class TodoCount {
+    class Counter {
         constructor() {
-
+            this.counterNode = document.createElement("div");
+            this.createTodoCountNode(this.counterNode);
         }
 
+        createTodoCountNode(counterNode) {
+            let todoCounterNode = document.createElement("span");
+            todoCounterNode.innerText = 'Todo';
+            let todoCounterValueNode = document.createElement("span");
+            todoCounterValueNode.classList.add('todoNum');
+            todoCounterValueNode.innerText = todoNum;
+
+            let doneCountNode = document.createElement("span");
+            doneCountNode.innerText = 'Done';
+            let doneCountValueNode = document.createElement("span");
+            doneCountValueNode.classList.add('doneNum');
+            doneCountValueNode.innerText = doneNum;
+
+            counterNode.appendChild(todoCounterNode);
+            counterNode.appendChild(todoCounterValueNode);
+            counterNode.appendChild(doneCountNode);
+            counterNode.appendChild(doneCountValueNode);
+
+            document.body.appendChild(counterNode);
+
+            return counterNode;
+        }
     }
 
+    let todoNum = 0;
+    let doneNum = 0;
+
+    function countTodoItems() {
+        let todoItems = document.querySelectorAll('.todo');
+        todoNum = todoItems.length;
+
+        let todoNumNode = document.querySelector('.todoNum');
+        todoNumNode.innerText = todoNum;
+
+        return todoNum;
+    }
+
+    function countDoneItems() {
+        let doneItems = document.querySelectorAll('.completed');
+        doneNum = doneItems.length;
+
+        let doneNumNode = document.querySelector('.doneNum');
+        doneNumNode.innerText = doneNum;
+
+        return doneNum;
+    }
 </script>
