@@ -9,7 +9,7 @@
 <body>
 <h1>Todo Todo</h1>
 <input id="todoInput" type="text" placeholder="What needs to be done?">
-<ul class="todoList"></ul>
+<ul id="todoList"></ul>
 </body>
 </html>
 <script>
@@ -31,8 +31,6 @@
         new TodoInput();
     });
 
-    let isClicked = false;
-
     class TodoInput {
         constructor() {
             this.addTodo();
@@ -53,14 +51,18 @@
 
     class TodoItem {
         constructor(todoContent) {
-            this.todoItem = this.getTodoItemDom(todoContent);
+            this.todoCheckBox = new TodoCheckBox();
+            this.todoDeleteBtn = new TodoDeleteBtn();
+            this.todoItem = this.createTodoItemDom(todoContent);
             this.todoItem.classList.add("todoItem");
-            let todoList = document.querySelector('.todoList');
+
+            let todoList = document.querySelector('#todoList');
             todoList.appendChild(this.todoItem);
         }
 
-        getTodoItemDom(todoContent) {
-            let todoItem = document.createElement("li");
+        createTodoItemDom(todoContent) {
+            let todoItemDom = document.createElement("li");
+
             let todoItemValue = document.createElement("span");
             todoItemValue.classList.add("todoItemValue");
             todoItemValue.innerText = todoContent;
@@ -69,45 +71,28 @@
             todoItemInput.classList.add("hidden");
             todoItemInput.setAttribute('placeholder', `${todoContent}`);
             todoItemInput.setAttribute('type', 'text');
-            let todoCheckBox = document.createElement("input");
-            todoCheckBox.classList.add("todoCheckBox");
-            todoCheckBox.setAttribute('type', 'checkbox');
-            let deleteBtn = document.createElement("a");
-            deleteBtn.innerText = 'X';
-            deleteBtn.classList.add("deleteBtn");
-            deleteBtn.classList.add("hidden");
 
-            todoItem.appendChild(todoCheckBox);
-            todoItem.appendChild(todoItemValue);
-            todoItem.appendChild(todoItemInput);
-            todoItem.appendChild(deleteBtn);
+            todoItemDom.appendChild(this.todoCheckBox.todoCheckBoxNode);
+            todoItemDom.appendChild(todoItemValue);
+            todoItemDom.appendChild(todoItemInput);
+            todoItemDom.appendChild(this.todoDeleteBtn.todoDeleteBtnNode);
 
-            todoItem.addEventListener('click', (e)=> {
+            todoItemDom.addEventListener('click', (e)=> {
                 if(e.target.className === 'todoItem') {
-                    // li 태그일때
+                    // li 클릭시
                     this.updateTodoItem(e.target);
                 } else if(e.target.className === 'todoItemValue') {
-                    // 안에 span일 때
+                    // span 클릭시
                     this.updateTodoItem(e.target.parentNode);
-                } else if(e.target.className === 'todoCheckBox') {
-                    // checkbox일 때
-                    e.target.classList.add('checked');
-                    new TodoCheckBox();
-                }
-            });
-            todoItem.addEventListener('mouseover', (e)=> {
-                if(e.target.className === 'todoItem') {
-                    // li태그일때
-                    this.deleteTodoItem(e.target);
-                } else if(e.target.className === 'todoItemValue') {
-                    // span 안에 span일 때
-                    this.deleteTodoItem(e.target.parentNode);
                 }
             });
 
-            return todoItem;
+            todoItemDom.addEventListener('mouseover', ()=> {
+                this.todoDeleteBtn.todoDeleteBtnNode.classList.toggle('hidden');
+            });
+
+            return todoItemDom;
         }
-
 
         updateTodoItem(target) {
             target.classList.add('updating');
@@ -126,41 +111,41 @@
 
             target.classList.remove('updating');
         }
-
-        deleteTodoItem(target) {
-            target.classList.add('deleting');
-
-            let deleteBtn = document.querySelector('.deleting .deleteBtn');
-            deleteBtn.classList.remove('hidden');
-
-            deleteBtn.addEventListener('click', ()=> {
-                let todoList = document.querySelector('.todoList');
-                todoList.removeChild(target);
-            });
-
-            target.classList.remove('deleting');
-        }
     }
 
     class TodoCheckBox {
         constructor() {
-            this.changeTodoItemState();
+            this.todoCheckBoxNode = document.createElement("input");
+            this.createTodoCheckBoxNode(this.todoCheckBoxNode);
         }
 
-        changeTodoItemState() {
-            let todoCheckBox = document.querySelector('.checked');
-            let checkedItem = todoCheckBox.parentNode;
+        createTodoCheckBoxNode(todoCheckBoxNode) {
+            todoCheckBoxNode.classList.add("todoCheckBox");
+            todoCheckBoxNode.setAttribute('type', 'checkbox');
+            todoCheckBoxNode.addEventListener('click', ()=> {
+                todoCheckBoxNode.parentNode.classList.toggle('completed');
+            });
 
-            checkedItem.classList.toggle('completed');
-            //
-            // let isCompleted = checkedItem.classList.contains('completed');
-            // if(todoCheckBox) {
-            //     checkedItem.classList.add('completed');
-            //     todoCheckBox.classList.remove('checked');
-            //     isCompleted = isCompleted;
-            // } else if(isCompleted && !todoCheckBox) {
-            //     checkedItem.classList.remove('completed');
-            // }
+            return todoCheckBoxNode;
+        }
+    }
+
+    class TodoDeleteBtn {
+        constructor() {
+            this.todoDeleteBtnNode = document.createElement("button");
+            this.createTodoDeleteBtnNode(this.todoDeleteBtnNode);
+        }
+
+        createTodoDeleteBtnNode(todoDeleteBtnNode) {
+            todoDeleteBtnNode.innerText = 'x';
+            todoDeleteBtnNode.classList.add("deleteBtn");
+            todoDeleteBtnNode.classList.add("hidden");
+            todoDeleteBtnNode.addEventListener('click', ()=> {
+                let todoList = document.querySelector('#todoList');
+                todoList.removeChild(todoDeleteBtnNode.parentNode);
+            });
+
+            return todoDeleteBtnNode;
         }
     }
 
