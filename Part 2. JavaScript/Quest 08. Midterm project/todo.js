@@ -74,7 +74,7 @@ class TodoCheckBox {
         todoCheckBoxNode.classList.add("todoCheckBox");
         todoCheckBoxNode.setAttribute('type', 'checkbox');
         todoCheckBoxNode.addEventListener('click', ()=> {
-            todoCheckBoxNode.parentNode.classList.toggle('completed');
+            todoCheckBoxNode.nextSibling.classList.toggle('completed');
             todoCheckBoxNode.parentNode.classList.toggle('todo');
             countTodoItems();
             countDoneItems();
