@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Todo</title>
+    <link rel="stylesheet" href="./todo.css">
+    <script src="./todo.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Todo Todo</h1>
+        <input id="todoInput" type="text" placeholder="What needs to be done?" autofocus>
+        <ul id="todoList"></ul>
+    </div>
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        new TodoInput();
+        new Counter();
+    });
+</script>

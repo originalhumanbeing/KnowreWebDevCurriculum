@@ -1,0 +1,98 @@
+body {
+    background-color: #f6f8fa;
+}
+
+.wrapper {
+    width: 80%;
+    height: 100%;
+    font-size: 15px;
+    margin: 100px auto;
+    padding: 50px;
+    background-color: #fff;
+    -webkit-box-shadow: 5px 7px 17px -3px rgba(128,128,128,0.79);
+    -moz-box-shadow: 5px 7px 17px -3px rgba(128,128,128,0.79);
+    box-shadow: 5px 7px 17px -3px rgba(128,128,128,0.79);
+
+}
+
+h1 {
+    text-align: center;
+    font-size: 6em;
+    line-height: 80px;
+    margin: 40px 0;
+    font-weight: 100;
+    border-bottom: 1px solid lightgrey;
+}
+
+#todoInput {
+    outline: none;
+    padding: 15px;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.003);
+    box-shadow: inset 1px 1px 17px -4px rgba(168,166,168,1);
+    border: none;
+    position: relative;
+    left: 30%;
+}
+
+.todoItem {
+    list-style: none;
+    padding: 15px;
+}
+
+.todoCheckBox {
+    position: relative;
+    left: 190px;
+    padding: 10px;
+}
+
+.todoOriginalBox {
+    font-size: 1.3em;
+    font-weight: 100;
+    position: absolute;
+    left: 380px;
+    line-height: 25px;
+    width: 300px;
+}
+
+.todoUpdateBox {
+    font-size: 1.2em;
+    font-weight: 100;
+    position: absolute;
+    left: 380px;
+    padding: 5px 8px;
+    outline: none;
+    width: 260px;
+    height: 15px;
+}
+
+.deleteBtn {
+    position: absolute;
+    left: 667px;
+    padding: 3px 5px;
+    margin: 3px 0 0 0;
+    background-color: transparent;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+}
+
+.counter {
+    text-align: center;
+}
+
+.counter * {
+    font-weight: 300;
+}
+
+.todoNum, .doneNum {
+    padding: 10px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: darkgrey;
+}
