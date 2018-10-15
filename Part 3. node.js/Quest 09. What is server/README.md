@@ -149,8 +149,49 @@
   
 * telnet 명령을 통해 http://www.google.com/ URL에 HTTP 요청을 날려 보세요.
   * 어떤 헤더들이 있나요?
+  ```
+  // connection open
+  telnet www.google.com 80
+  Trying 216.58.197.4...
+  Connected to www.google.com.
+  Escape character is '^]'.
+  
+  // GET method
+  GET / HTTP/1.1
+  ```
+  ```
+  // result 응답 헤더
+  HTTP/1.1 200 OK
+  Date: Mon, 15 Oct 2018 11:58:50 GMT
+  Expires: -1
+  Cache-Control: private, max-age=0
+  Content-Type: text/html; charset=ISO-8859-1
+  P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."
+  Server: gws
+  X-XSS-Protection: 1; mode=block
+  X-Frame-Options: SAMEORIGIN
+  Set-Cookie: 1P_JAR=2018-10-15-11; expires=Wed, 14-Nov-2018 11:58:50 GMT; path=/; domain=.google.com
+  Set-Cookie: NID=141=BDrhQQOlpKYV1jAGlTQFRkZ4Q_h-w39ISyrOgKUwc7pRmEALdlZXD-pfDus4K8ryUrQKkoN-yR6wJ8iY86VNdUI48OPBsbZfcWOv5IKo_Vfm8IK1rwS-x1lC7g9GpdUX; expires=Tue, 16-Apr-2019 11:58:50 GMT; path=/; domain=.google.com; HttpOnly
+  Accept-Ranges: none
+  Vary: Accept-Encoding
+  Transfer-Encoding: chunked
+  ```
   * 그 헤더들은 어떤 역할을 하나요?
-
+    * status line: HTTP 프로토콜의 버전과 요청 처리 상태값
+    * Date: 응답 헤더를 보낸 일시
+    * Expires: 캐시해둔 정보를 다시 체크해봐야 하는 만기 일시, 0 혹은 -1과 같은 시간이 아닌 숫자는 캐시 불가함을 나타냄
+    * Cache-Control: 캐싱에 대한 상세한 디렉티브를 정해 놓은 부분이며, 'private'은 해당 응답이 단일 사용자를 위한 것이고, 공유 캐시에 저장되서는 안됌을 의미함
+    max-age는 응답 시간을 기준으로 리소스가 최신 상태라고 판단할 수 있는 시간을 의미함
+    * Content-Type: 보내는 데이터의 MIME type, 클라이언트는 이를 보고 데이터 형식을 판단하여 적절하게 렌더링함; charset은 문자 형식을 말함
+    * P3P: Platform for Privacy Preferences라는 뜻으로 클라이언트와 서버 간의 프라이버시 정책을 관리하는 기준
+    * Server: 요청을 처리하는 원 서버의 소프트웨어 정보; gws은 구글 서블릿 엔진 되시겠다
+    * X-XSS-Protection: 스크립팅 공격으로부터 클라이언트를 보호할 수 있도록 XSS 공격을 필터링하는 부분; mode=block은 해당 부분을 제거하고 렌더링하는 수준이 아닌 페이지 로드 자체를 중단시키는 상세 설정 부분임
+    * X-Frame-Options: `<frame>`, `<iframe>`, `<object>`에서 해당 페이지를 렌더링하게 할 것인지 여부를 선택하는 부분. 
+    사이트 내 콘텐츠가 다른 사이트에 포함되지 않도록 해서 Clickjacking 공격에 사용되거나 당하지 않도록 함;
+    SAMEORIGIN 값은 `<frame>`에 포함된 페이지가 그 페이지를 제공하는 사이트와 동일한 경우 허용함을 의미함
+    * Set-Cookie: 쿠키 저장과 관련된 부분. expire은 언제 해당 쿠키값이 만료될지를 나타내며, path, domain은 쿠키의 스코프를 나타냄. path에 `/example`라고 되어 있다면 저장된 도메인에는 항상 해당값이 들어가야 함.
+    예를 들어 `google.com/example`, `google.com/example/drive`, `google.com/example/mail` 뭐 이런 식으로 sub 경로에 반드시 포함되어 있어야 한다. 
+    HttpOnly는 XSS 공격을 방지하는 것과 관련있는 설정 부분으로 해당 키워드가 있을 경우, 그 쿠키는 `document.cookie` API에 접근이 불가하며 서버에 전송만 가능함
 
 ## 참고
 * 터미널에서 IP주소 확인: `nslookup`
