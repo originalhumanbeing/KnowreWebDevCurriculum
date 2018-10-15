@@ -130,13 +130,22 @@
    ```
     
   * 그 IP주소들은 어디에 위치해 있나요?
-    * DNS에 있으며, DNS에서 도메인 네임과 일치하는 IP주소를 찾아 준다. DNS는 도메인 네임과 매칭되는 IP주소를 보관하고 있는 큰 DB이다. 
+    * 도메인 네임에 맞는 IP주소를 찾는 것은 DNS 서버를 통해 할 수 있고, 직접적으로 지나가는 물리적 위치를 말하는 것이라면 라우터라고 할 수 있다.
+    라우터는 라우팅 테이블을 통해 계산된 최적 경로에 따라 위계적인 구조를 가지고 있다. 
   
 * Wireshark를 통해 www.google.com 으로 요청을 날렸을 떄 어떤 TCP 패킷이 오가는지 확인해 보세요
+   ![packet5](./how_server_works/packet5.png)
+   ![packet46](./how_server_works/packet46.png)
+   ![packet73](./how_server_works/packet73.png)
+   ![packet100](./how_server_works/packet100.png)
   * TCP 패킷을 주고받는 과정은 어떻게 되나요?
-    * Application Data -> ACK -> HTTP response -> HTTP request -> TCP window 업데이트+데이터 형식에 맞게 요청 내용 정리
+    * TCP 패킷을 주고받았다면 SYN 패킷을 클라이언트에서 보내면 이를 받은 서버에서 ACK, SYN 패킷을 보내고, 클라이언트는 다시 ACK 패킷을 보내면서 데이터를 보냈을 것이다.
+    * 구글은 TCP 프로토콜이 패킷을 주고 받는 횟수가 많아서 느리기 때문에 이를 위 이미지에서 보이는 것처럼 GQUIC 프로토콜로 대체했다.
+    * GQUIC 프로토콜은 TCP 대신 UDP 프로토콜 위에 해당 프로토콜을 얹어 패킷 전송, HTTP 프로토콜의 일부분까지 수행한다. 
   * 각각의 패킷에 어떤 정보들이 담겨 있나요?
-    * Application Data/ ACK/ HTTP response/ HTTP request/ SSDP, LLMNR 프로토콜 등을 활용한 데이터 형식들
+    * Frame: 도착 시간, 바이트 정보, 프레임 길이 등
+    * Ethernet: Destination, Source, type 
+    * Internet Protocol Version, Time to live, Source/Destination Port Num 등
   
 * telnet 명령을 통해 http://www.google.com/ URL에 HTTP 요청을 날려 보세요.
   * 어떤 헤더들이 있나요?
