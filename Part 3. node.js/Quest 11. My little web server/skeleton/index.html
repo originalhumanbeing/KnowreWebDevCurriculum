@@ -5,31 +5,43 @@
     <title>AJAX 연습</title>
 </head>
 <body>
-    <h1>AJAX 연습을 시작해 봅시다</h1>
-    <button id="btn">POST 통신</button>
+    <h1 id="title">Hello World!</h1>
+    <button id="btnGet">GET 통신</button>
+    <button id="btnPost">POST 통신</button>
 </body>
 </html>
 
 <script type="text/javascript">
-    let btn = document.querySelector('#btn');
+    let btnGet = document.querySelector('#btnGet');
+    let btnPost = document.querySelector('#btnPost');
+    let title = document.querySelector('#title');
     let xhr = new XMLHttpRequest();
 
     document.addEventListener('DOMContentLoaded', () => {
-        btn.addEventListener('click', sendReq);
+        btnGet.addEventListener('click', sendGet);
+        btnPost.addEventListener('click', sendPost);
     });
 
     xhr.onreadystatechange = ()=> {
-        if(xhr.readyState == 4 && xhr.status == 200) {
-            btn.innerText = xhr.responseText;
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            title.innerText = xhr.responseText;
         } else {
-            console.log('xhr state 변경 감지', xhr.readyState);
+            console.log(xhr.readyState);
         }
     };
 
-    function sendReq() {
-        xhr.open('POST', 'http://localhost:8080/foo?bar=hhj', true);
+    function sendGet() {
+        xhr.open('GET', 'http://localhost:8080/foo?bar=GET', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send();
+        console.log('*****  get 요청 보냄  ******');
+    }
+
+    function sendPost() {
+        let body = 'Hello POST';
+        xhr.open('POST', 'http://localhost:8080/foo', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
         console.log('*****  post 요청 보냄  ******');
     }
 </script>
