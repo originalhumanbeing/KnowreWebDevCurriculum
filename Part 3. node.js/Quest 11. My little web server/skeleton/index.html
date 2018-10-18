@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX 연습</title>
+</head>
+<body>
+    <h1>AJAX 연습을 시작해 봅시다</h1>
+    <button id="btn">POST 통신</button>
+</body>
+</html>
+
+<script type="text/javascript">
+    let btn = document.querySelector('#btn');
+    let xhr = new XMLHttpRequest();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        btn.addEventListener('click', sendReq);
+    });
+
+    xhr.onreadystatechange = ()=> {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            btn.innerText = xhr.responseText;
+        } else {
+            console.log('xhr state 변경 감지', xhr.readyState);
+        }
+    };
+
+    function sendReq() {
+        xhr.open('POST', 'http://localhost:8080/foo?bar=hhj', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send();
+        console.log('*****  post 요청 보냄  ******');
+    }
+</script>
