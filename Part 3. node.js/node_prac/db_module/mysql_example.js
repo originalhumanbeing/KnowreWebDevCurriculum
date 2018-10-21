@@ -2,8 +2,8 @@ var mysql = require('mysql');
 
 var client = mysql.createConnection({
     user: 'root',
-    password: 'rhforhfo89!'
-})
+    password: ''
+});
 
 client.query('USE Company');
 client.query('SELECT * FROM products', function(error, result, fields) {
