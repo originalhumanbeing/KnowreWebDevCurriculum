@@ -10,6 +10,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         new Notepad();
+        new Tab();
     });
 
     // 1. 새 파일 생성
@@ -22,18 +23,20 @@
     // 가장 바깥 window 같은 존재
     // 1. tab - 즉 새로운 text edit 공간을 만들 수 있다 - div node 생성하고 그 안에서 빈 file을 open한다는 개념. writefile을 해서 아무것도 없는 파일을 만들고 read.
     // 2. tab들의 전체 상태를 저장할 수 있다
+    // notepad 안에 tab이 포함되어서 생성되면 안 되는 이유... -> 그럼 tab 추가할 때마다 tab만 추가가 아니라 notepad가 추가되니까.....
     class Notepad {
         constructor() {
             this.notepadNode = document.createElement('div');
-            this.tab = new Tab();
-            this.createNotepad();
+            this.btn = new Btn();
+            this.createNotepadNode();
         }
 
-        createNotepad() {
+        createNotepadNode() {
             this.notepadNode.classList.add('notepad');
-            this.notepadNode.appendChild(this.tab.tabNode);
+            console.log(this.btn);
+            this.notepadNode.appendChild(this.btn.btnWrapper);
+
             let bodyNode = document.body;
-            console.log(bodyNode);
             bodyNode.appendChild(this.notepadNode);
         }
     }
@@ -47,7 +50,61 @@
 
         createTabNode() {
             this.tabNode.classList.add('tab');
+            this.tabNode.addEventListener('click', ()=> {
+                this.tabNode.setAttribute('ContentEditable', 'true');
+            });
+
+            let notepad = document.querySelector('.notepad');
+            notepad.appendChild(this.tabNode);
+
             return this.tabNode;
+        }
+    }
+
+    class Btn {
+        constructor() {
+            this.addNewTabBtn = document.createElement('button');
+            this.saveBtn = document.createElement('button');
+            this.updateBtn = document.createElement('button');
+            this.deleteBtn = document.createElement('button');
+            this.btnWrapper = document.createElement('div');
+            this.createBtnNodes();
+        }
+
+        createBtnNodes() {
+            this.addNewTabBtn.classList.add('addNewTabBtn');
+            this.addNewTabBtn.innerText = '새 메모';
+            this.addNewTabBtn.addEventListener('click', ()=> {
+                console.log('새 메모를 추가합니다');
+            });
+
+            this.saveBtn.classList.add('saveBtn');
+            this.saveBtn.innerText = '저장';
+            this.saveBtn.addEventListener('click', ()=> {
+                console.log('해당 메모를 저장합니다');
+            });
+
+            this.updateBtn.classList.add('updateBtn');
+            this.updateBtn.innerText = '수정';
+            this.updateBtn.addEventListener('click', ()=> {
+                console.log('해당 메모를 수정합니다');
+            });
+
+            this.deleteBtn.classList.add('deleteBtn');
+            this.deleteBtn.innerText = '삭제';
+            this.deleteBtn.addEventListener('click', ()=> {
+                console.log('해당 메모를 삭제합니다');
+            });
+
+            this.btnWrapper.appendChild(this.addNewTabBtn);
+            this.btnWrapper.appendChild(this.saveBtn);
+            this.btnWrapper.appendChild(this.updateBtn);
+            this.btnWrapper.appendChild(this.deleteBtn);
+            this.btnWrapper.setAttribute('display', 'flex');
+            this.btnWrapper.setAttribute('justify-content', 'space-between');
+            this.btnWrapper.classList.add('fixed');
+
+            return this.btnWrapper;
         }
     }
 </script>
