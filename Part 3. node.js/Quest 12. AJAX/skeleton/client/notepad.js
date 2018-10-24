@@ -13,13 +13,22 @@ class Notepad {
     }
 
     showList() {
-        // 변경 사항이 있을 때마다 새로 뿌리는 것은...?
         fetch(`http://localhost:8080/memos`, {
             method: 'get'
         }).then((res) => res.json()).then((data) => {
-            for(let memo of data) {
+            this.list.innerHTML = '';
+            for (let memo of data) {
                 let li = document.createElement('li');
+                li.classList.add(memo);
                 li.innerText = memo;
+                li.addEventListener('click', () => {
+                    let title = memo.split('.');
+                    fetch(`http://localhost:8080/memo/${title[0]}`, {
+                        method: 'get'
+                    }).then((res) => res.json()).then((data) => {
+                        this.textarea.innerText = data;
+                    })
+                });
                 this.list.appendChild(li);
             }
         })
@@ -34,8 +43,8 @@ class Notepad {
                 method: 'post',
                 headers: myHeaders,
                 body: this.textarea.value
-            //  문자열을 JSON.stringify로 감싸면 "" 가 생김
-            //  req 보낼 때, 서버에서 res 보낼 때 항상 문자열로 보내고 받을 때는 버퍼 영역에 있던 바이너리 형태의 데이터를 객체화한다
+                //  문자열을 JSON.stringify로 감싸면 "" 가 생김
+                //  req 보낼 때, 서버에서 res 보낼 때 항상 문자열로 보내고 받을 때는 버퍼 영역에 있던 바이너리 형태의 데이터를 객체화한다
             })
                 .then((res) => res.json())
                 .then((data) => {

@@ -28,14 +28,9 @@ app.get('/memo/:title', function (req, res) {
     let id = req.params.title;
     let title = `./memos/${id}.txt`;
     fs.readFile(title, 'utf8', function (error, data) {
-        if (data) {
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
-            });
-            res.end(data);
-        } else {
-            console.log(error)
-        }
+        if (error) return res.sendStatus(404);
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(JSON.stringify(data));
     })
 });
 
