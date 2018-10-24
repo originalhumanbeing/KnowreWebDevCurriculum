@@ -4,6 +4,7 @@
     padding: 0;
     font-size: 12px;
     color: #24292e;
+    box-sizing: border-box;
 }
 
 ul, li {
@@ -13,24 +14,57 @@ ul, li {
 .wrapper {
     width: 900px;
     height: 100%;
-    margin: 100px auto;
+    margin: 70px auto;
 }
 
 .notepad {
+    display: flex;
     position: relative;
     width: 900px;
     min-height: 500px;
-    background-color: whitesmoke;
-    border-radius: 3px;
 }
 
-.tab {
-    background-color: pink;
+.list {
+    position: absolute;
+    top: 46px;
+    left: 0;
+    padding: 8px;
+    width: 250px;
+    min-height: 500px;
+    background-color: #ffffff;
+    border-left: 1px solid silver;
+    border-bottom: 1px solid silver;;
+    border-bottom-left-radius: 3px;
+}
+
+.list li {
+    font-size: 1.1em;
+    font-weight: 400;
+    border-bottom: 1px solid silver;
+    padding: 3px;
+    margin: 3px;
+}
+
+.memo {
+    position: absolute;
+    top: 46px;
+    left: 250px;
+    width: 650px;
+    min-height: 500px;
+    background-color: #ffffff;
+    border-top: 0;
+    border-right: 1px solid silver;
+    border-left: 1px solid silver;
+    border-bottom: 1px solid silver;;
+    border-bottom-right-radius: 3px;
 }
 
 .menu {
     display: flex;
-    width: 892px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 900px;
     padding: 8px 0 8px 8px;
     background-color: darkseagreen;
     border-top-left-radius: 3px;
@@ -44,5 +78,5 @@ button {
     font-weight: 400;
     border-radius: 5px;
     border: 1px solid #f6f8fa;
-    background-color: whitesmoke;
+    background-color: #ffffff;
 }
