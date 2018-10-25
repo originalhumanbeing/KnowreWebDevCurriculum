@@ -57,6 +57,7 @@ ul, li {
     border-left: 1px solid silver;
     border-bottom: 1px solid silver;;
     border-bottom-right-radius: 3px;
+    padding: 8px;
 }
 
 .menu {

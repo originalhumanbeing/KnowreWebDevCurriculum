@@ -12,21 +12,40 @@ class Notepad {
         this.addClickEvents();
     }
 
+    // 전체 메모 리스트 렌더, 각 메모 선택시 메모 본문 렌더
     showList() {
         fetch(`http://localhost:8080/memos`, {
             method: 'get'
         }).then((res) => res.json()).then((data) => {
             this.list.innerHTML = '';
-            for (let memo of data) {
+
+            let temp = [];
+            let files = [];
+            data['body'].map(e => {
+                let file = e.split('.');
+                temp.push(file[0]);
+            });
+
+            temp.sort((a, b) => {
+                return a-b;
+            });
+
+            temp.map(e => {
+               e = e + '.txt';
+               files.push(e);
+            });
+
+            for (let memo of files) {
                 let li = document.createElement('li');
                 li.classList.add(memo);
                 li.innerText = memo;
                 li.addEventListener('click', () => {
                     let title = memo.split('.');
+                    this.currentFile = title[0];
                     fetch(`http://localhost:8080/memo/${title[0]}`, {
                         method: 'get'
                     }).then((res) => res.json()).then((data) => {
-                        this.textarea.innerText = data;
+                        this.textarea.value = data.body;
                     })
                 });
                 this.list.appendChild(li);
@@ -35,27 +54,45 @@ class Notepad {
     }
 
     addClickEvents() {
+        this.writeBtn.addEventListener('click', () => {
+            this.textarea.value = '';
+        });
+
         this.saveBtn.addEventListener('click', () => {
             const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "text/plain");
+            myHeaders.append("Content-Type", "application/json");
 
             fetch(`http://localhost:8080/memo`, {
                 method: 'post',
                 headers: myHeaders,
-                body: this.textarea.value
-                //  문자열을 JSON.stringify로 감싸면 "" 가 생김
-                //  req 보낼 때, 서버에서 res 보낼 때 항상 문자열로 보내고 받을 때는 버퍼 영역에 있던 바이너리 형태의 데이터를 객체화한다
+                body: JSON.stringify({body: this.textarea.value})
+            }).then((res) => res.json()).then((data) => {
+                this.textarea.value = data.body;
+                this.currentFile = data.title;
+                this.showList();
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    this.textarea.value = data.body;
-                    this.currentFile = data.title;
-                })
         });
 
         this.updateBtn.addEventListener('click', () => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            fetch(`http://localhost:8080/memo/${this.currentFile}`, {
+                method: 'put',
+                headers: myHeaders,
+                body: JSON.stringify({body: this.textarea.value})
+            }).then((res) => res.json()).then((data) => {
+                this.textarea.value = data.body;
+                this.currentFile = data.title;
+                this.showList();
+            })
+        });
+
+        this.deleteBtn.addEventListener('click', () => {
             console.log(this.currentFile);
-        })
+            fetch
+
+        });
     }
 }
 
