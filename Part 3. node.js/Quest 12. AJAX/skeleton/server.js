@@ -39,8 +39,20 @@ app.post('/memo', function (req, res) {
 
     fs.readdir('./memos', function (err, files) {
         let totalFiles = files.length;
-        let title = totalFiles + 1;
+        let title = totalFiles+1;
         let fileLocation = `./memos/${title}.txt`;
+
+        files.map(e => {
+            e = e.split('.');
+            e = e[0];
+            if(totalFiles>0 && title === Number(e)) {
+                let lastFile = files[totalFiles-1];
+                lastFile = lastFile.split('.');
+                title = Number(lastFile[0]) + 1;
+                title = title;
+                fileLocation = `./memos/${title}.txt`;
+            }
+        });
 
         fs.writeFile(fileLocation, data, function (error) {
             if (error) throw error;
@@ -64,11 +76,12 @@ app.put('/memo/:title', function (req, res) {
 
 // 메모 삭제
 app.delete('/memo/:title', function (req, res) {
-    let id = req.params.title;
-    let title = `./memos/${id}.txt`;
-    fs.unlink(title, function () {
+    let title = req.params.title;
+    let fileLocation = `./memos/${title}.txt`;
+    fs.unlink(fileLocation, function () {
+        let msg = `${title}.txt이 삭제 완료되었습니다`;
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(`${title}이 삭제 완료되었습니다`);
+        res.end(JSON.stringify({body: msg}));
     })
 });
 

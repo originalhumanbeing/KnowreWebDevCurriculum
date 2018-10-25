@@ -25,14 +25,10 @@ class Notepad {
                 let file = e.split('.');
                 temp.push(file[0]);
             });
-
-            temp.sort((a, b) => {
-                return a-b;
-            });
-
+            temp.sort((a, b) => a - b);
             temp.map(e => {
-               e = e + '.txt';
-               files.push(e);
+                e = e + '.txt';
+                files.push(e);
             });
 
             for (let memo of files) {
@@ -62,6 +58,7 @@ class Notepad {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
+            console.log('저장 요청');
             fetch(`http://localhost:8080/memo`, {
                 method: 'post',
                 headers: myHeaders,
@@ -89,9 +86,13 @@ class Notepad {
         });
 
         this.deleteBtn.addEventListener('click', () => {
-            console.log(this.currentFile);
-            fetch
-
+            fetch(`http://localhost:8080/memo/${this.currentFile}`, {
+                method: 'delete'
+            }).then((res) => res.json()).then(data => {
+                window.alert(data.body);
+            });
+            this.showList();
+            this.textarea.value = '';
         });
     }
 }
