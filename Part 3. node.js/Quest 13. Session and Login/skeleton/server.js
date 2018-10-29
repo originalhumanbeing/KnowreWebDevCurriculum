@@ -61,17 +61,20 @@ app.post('/login', function(req, res) {
 });
 
 // 전체 메모 리스트 가져오기
-app.get('/memos', function (req, res) {
-    fs.readdir('./memos', function (err, files) {
+app.get('/memos/:nickname', function (req, res) {
+    let nickname = req.params.nickname;
+    let fileLocation = `./memos/${nickname}`;
+    fs.readdir(fileLocation, function (err, files) {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end(JSON.stringify({body: files}));
     })
 });
 
 // 메모 읽기
-app.get('/memo/:title', function (req, res) {
+app.get('/memo/:nickname/:title', function (req, res) {
+    let nickname = req.params.nickname;
     let id = req.params.title;
-    let fileLocation = `./memos/${id}.txt`;
+    let fileLocation = `./memos/${nickname}/${id}.txt`;
     fs.readFile(fileLocation, 'utf8', function (error, data) {
         if (error) return res.sendStatus(404);
         res.writeHead(200, {'Content-Type': 'text/html'});
@@ -80,14 +83,15 @@ app.get('/memo/:title', function (req, res) {
 });
 
 // 새 메모 저장
-app.post('/memo', function (req, res) {
+app.post('/memo/:user', function (req, res) {
     let data = req.body.body;
-    if (!data) return res.sendStatus(400);
+    let user = req.body.user;
+    if (!data || !user) return res.sendStatus(400);
 
-    fs.readdir('./memos', function (err, files) {
+    fs.readdir(`./memos/${user}`, function (err, files) {
         let totalFiles = files.length;
         let title = totalFiles + 1;
-        let fileLocation = `./memos/${title}.txt`;
+        let fileLocation = `./memos/${user}/${title}.txt`;
 
         files.map(e => {
             e = e.split('.');
@@ -97,7 +101,7 @@ app.post('/memo', function (req, res) {
                 lastFile = lastFile.split('.');
                 title = Number(lastFile[0]) + 1;
                 title = title;
-                fileLocation = `./memos/${title}.txt`;
+                fileLocation = `./memos/${user}/${title}.txt`;
             }
         });
 

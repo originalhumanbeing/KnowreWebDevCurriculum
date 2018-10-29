@@ -101,3 +101,18 @@ button {
     padding: 0 8px;
     color: darkred;
 }
+
+#userNav {
+    margin: 0 5px 15px 5px;
+    border-bottom: 1px solid black;
+}
+
+#userNav . {
+    padding: 5px 8px;
+    margin: 10px 3px;
+}
+
+#userNickname {
+    display: inline-block;
+    margin-left: 15px;
+}
