@@ -86,8 +86,8 @@
 * `skeleton` 디렉토리에서 작업을 하시되, 작업을 시작하기 전에 해당 디렉토리에서 `npm install` 명령을 날리시면 자동으로 express가 설치됩니다.
 
 ##참고
-[array 정렬](http://dudmy.net/javascript/2015/11/16/javascript-sort/)
-[array element 제거](https://love2dev.com/blog/javascript-remove-from-array/)
-[fetch 예제](https://googlechrome.github.io/samples/fetch-api/fetch-post.html)
-[bodyParser API](https://www.npmjs.com/package/body-parser#bodyparserjsonoptions)
-[client-server 데이터형 맞추기](http://lazydev.tistory.com/54)
+[array 정렬](http://dudmy.net/javascript/2015/11/16/javascript-sort/)  
+[array element 제거](https://love2dev.com/blog/javascript-remove-from-array/)  
+[fetch 예제](https://googlechrome.github.io/samples/fetch-api/fetch-post.html)  
+[bodyParser API](https://www.npmjs.com/package/body-parser#bodyparserjsonoptions)  
+[client-server 데이터형 맞추기](http://lazydev.tistory.com/54)  

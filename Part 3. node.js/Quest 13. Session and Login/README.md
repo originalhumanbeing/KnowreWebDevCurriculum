@@ -39,8 +39,8 @@
   * 로그인했을 때 해당 사용자가 이전에 작업했던 탭들과 선택된 탭, 커서 위치 등의 상태가 로딩 되어야 합니다.
 
 ## 참고
-[쿠키-세션 기본](https://cinabrosite.wordpress.com/2017/01/24/cookie_session/)
-[cookie basic](https://computer.howstuffworks.com/cookie1.htm)
-[how cookies work](https://stackoverflow.com/questions/1968722/how-cookies-work)
-[cookie and session](https://stackoverflow.com/questions/11142882/how-do-cookies-and-sessions-work)
-[how does a web session work](https://machinesaredigging.com/2013/10/29/how-does-a-web-session-work/)
+[쿠키-세션 기본](https://cinabrosite.wordpress.com/2017/01/24/cookie_session/)  
+[cookie basic](https://computer.howstuffworks.com/cookie1.htm)  
+[how cookies work](https://stackoverflow.com/questions/1968722/how-cookies-work)  
+[cookie and session](https://stackoverflow.com/questions/11142882/how-do-cookies-and-sessions-work)  
+[how does a web session work](https://machinesaredigging.com/2013/10/29/how-does-a-web-session-work/)  

@@ -6,7 +6,6 @@ const express = require('express'),
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-// app.use(bodyParser.text());
 app.use(express.static('client'));
 
 app.get('/', (req, res) => {
@@ -39,14 +38,14 @@ app.post('/memo', function (req, res) {
 
     fs.readdir('./memos', function (err, files) {
         let totalFiles = files.length;
-        let title = totalFiles+1;
+        let title = totalFiles + 1;
         let fileLocation = `./memos/${title}.txt`;
 
         files.map(e => {
             e = e.split('.');
             e = e[0];
-            if(totalFiles>0 && title === Number(e)) {
-                let lastFile = files[totalFiles-1];
+            if (totalFiles > 0 && title === Number(e)) {
+                let lastFile = files[totalFiles - 1];
                 lastFile = lastFile.split('.');
                 title = Number(lastFile[0]) + 1;
                 title = title;
