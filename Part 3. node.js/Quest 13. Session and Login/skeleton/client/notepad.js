@@ -20,9 +20,11 @@ class Notepad {
 
         this.currentUser = '';
         this.currentFile = '';
-        this.currentCursor = '';
+        this.cursorStart = '';
+        this.cursorEnd = '';
 
         this.addClickEvents();
+        this.findCursor();
     }
 
     validateUser(id, pwd) {
@@ -34,7 +36,7 @@ class Notepad {
             headers: myHeaders,
             body: JSON.stringify({id: id, pwd: pwd})
         }).then((res) => res.json()).then((data) => {
-            if(data['body'].isLogin && data['body'].nickname) {
+            if (data['body'].isLogin && data['body'].nickname) {
                 this.currentUser = data['body'].nickname;
                 this.showList();
                 this.authForm.hidden = true;
@@ -44,9 +46,17 @@ class Notepad {
                 this.authFailMsg.innerText = data['body'];
                 this.authFailMsg.hidden = false;
                 // todo 로그인 성공 못 했을 경우, 새 메모 작성 등 못 하도록 방어
-            }}).then(() => {
+            }
+        }).then(() => {
             this.id.value = '';
             this.pwd.value = '';
+        })
+    }
+
+    findCursor() {
+        this.textarea.addEventListener('keypress', () => {
+            this.cursorStart = this.textarea.selectionStart;
+            this.cursorEnd = this.textarea.selectionEnd;
         })
     }
 
@@ -81,10 +91,17 @@ class Notepad {
                         li.addEventListener('click', () => {
                             let title = memo.split('.');
                             this.currentFile = title[0];
+                            console.log('showlist 메모 리스트 만들 때', this.currentUser);
                             fetch(`http://localhost:8080/memo/${this.currentUser}/${title[0]}`, {
                                 method: 'get'
                             }).then((res) => res.json()).then((data) => {
                                 this.textarea.value = data.body;
+                                this.textarea.selectionStart = data.cursorStart;
+                                console.log(data.cursorStart);
+                                this.textarea.selectionEnd = data.cursorEnd;
+                                console.log(data.cursorEnd);
+                                this.textarea.setSelectionRange(data.cursorStart, data.cursorEnd);
+                                this.textarea.focus();
                             })
                         });
                         this.list.appendChild(li);
@@ -118,10 +135,17 @@ class Notepad {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
+            console.log('저장 당시 커서 시작', this.cursorStart);
+            console.log('저장 당시 커서 끝', this.cursorEnd);
             fetch(`http://localhost:8080/memo/${this.currentUser}`, {
                 method: 'post',
                 headers: myHeaders,
-                body: JSON.stringify({body: this.textarea.value, user: this.currentUser})
+                body: JSON.stringify({
+                    body: this.textarea.value,
+                    user: this.currentUser,
+                    cursorStart: this.cursorStart,
+                    cursorEnd: this.cursorEnd
+                })
             }).then((res) => res.json()).then((data) => {
                 this.textarea.value = data.body;
                 this.currentFile = data.title;

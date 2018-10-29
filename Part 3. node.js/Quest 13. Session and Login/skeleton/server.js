@@ -18,7 +18,8 @@ let members = {
     1: {
         id: 'test1@email.com',
         pwd: '1111',
-        nickname: 'test1'
+        nickname: 'test1',
+        files: []
     }
     // 2: {
     //     id: 'test2@email.com',
@@ -37,13 +38,13 @@ app.get('/', (req, res) => {
 });
 
 // login 하기
-app.post('/login', function(req, res) {
+app.post('/login', function (req, res) {
     let id = req.body.id;
     let pwd = req.body.pwd;
 
-    if(id && pwd) {
-        for(let member in members) {
-            if(members[member].id === id && members[member].pwd === pwd) {
+    if (id && pwd) {
+        for (let member in members) {
+            if (members[member].id === id && members[member].pwd === pwd) {
                 req.session.isLogin = true;
                 req.session.nickname = members[member].nickname;
 
@@ -75,10 +76,24 @@ app.get('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let id = req.params.title;
     let fileLocation = `./memos/${user}/${id}.txt`;
+    let cursorStart = '';
+    let cursorEnd = '';
+
+    for (let member in members) {
+        if (members[member].nickname === user) {
+            console.log(members[member].files);
+            cursorStart = members[member].files[id].cursorStart;
+            cursorEnd = members[member].files[id].cursorEnd;
+        }
+    }
+
     fs.readFile(fileLocation, 'utf8', function (error, data) {
         if (error) return res.sendStatus(404);
+        console.log(cursorStart);
+        console.log(cursorEnd);
+
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: data}));
+        res.end(JSON.stringify({body: data, cursorStart: cursorStart, cursorEnd: cursorEnd}));
     })
 });
 
@@ -104,6 +119,17 @@ app.post('/memo/:user', function (req, res) {
                 fileLocation = `./memos/${user}/${title}.txt`;
             }
         });
+
+        // 회원 db에 파일 정보 넣기
+        for (let member in members) {
+            if (members[member].nickname === user) {
+                members[member].files[title] = {
+                    cursorStart: req.body.cursorStart,
+                    cursorEnd: req.body.cursorEnd
+                };
+                console.log('저장할 때 ', members[member].files);
+            }
+        }
 
         fs.writeFile(fileLocation, data, function (error) {
             if (error) throw error;
