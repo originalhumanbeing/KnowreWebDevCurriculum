@@ -61,9 +61,9 @@ app.post('/login', function(req, res) {
 });
 
 // 전체 메모 리스트 가져오기
-app.get('/memos/:nickname', function (req, res) {
-    let nickname = req.params.nickname;
-    let fileLocation = `./memos/${nickname}`;
+app.get('/memos/:user', function (req, res) {
+    let user = req.params.user;
+    let fileLocation = `./memos/${user}`;
     fs.readdir(fileLocation, function (err, files) {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end(JSON.stringify({body: files}));
@@ -71,10 +71,10 @@ app.get('/memos/:nickname', function (req, res) {
 });
 
 // 메모 읽기
-app.get('/memo/:nickname/:title', function (req, res) {
-    let nickname = req.params.nickname;
+app.get('/memo/:user/:title', function (req, res) {
+    let user = req.params.user;
     let id = req.params.title;
-    let fileLocation = `./memos/${nickname}/${id}.txt`;
+    let fileLocation = `./memos/${user}/${id}.txt`;
     fs.readFile(fileLocation, 'utf8', function (error, data) {
         if (error) return res.sendStatus(404);
         res.writeHead(200, {'Content-Type': 'text/html'});
@@ -114,9 +114,10 @@ app.post('/memo/:user', function (req, res) {
 });
 
 // 메모 수정
-app.put('/memo/:title', function (req, res) {
+app.put('/memo/:user/:title', function (req, res) {
+    let user = req.params.user;
     let title = req.params.title;
-    let fileLocation = `./memos/${title}.txt`;
+    let fileLocation = `./memos/${user}/${title}.txt`;
     let data = req.body.body;
     fs.writeFile(fileLocation, data, function (error) {
         if (error) throw error;
@@ -126,9 +127,10 @@ app.put('/memo/:title', function (req, res) {
 });
 
 // 메모 삭제
-app.delete('/memo/:title', function (req, res) {
+app.delete('/memo/:user/:title', function (req, res) {
+    let user = req.params.user;
     let title = req.params.title;
-    let fileLocation = `./memos/${title}.txt`;
+    let fileLocation = `./memos/${user}/${title}.txt`;
     fs.unlink(fileLocation, function () {
         let msg = `${title}.txt이 삭제 완료되었습니다`;
         res.writeHead(200, {'Content-Type': 'text/html'});
