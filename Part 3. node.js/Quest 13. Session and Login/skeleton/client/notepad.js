@@ -42,6 +42,7 @@ class Notepad {
                 this.authForm.hidden = true;
                 this.userNickname.innerText = this.currentUser + '님';
                 this.userNav.hidden = false;
+                this.authFailMsg.hidden = true;
             } else {
                 this.authFailMsg.innerText = data['body'];
                 this.authFailMsg.hidden = false;
