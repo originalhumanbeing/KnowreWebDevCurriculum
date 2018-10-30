@@ -1,14 +1,28 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="/style.css">
-		<script src="/notepad.js"></script>
-	</head>
-	<body>
-		<!-- TODO: 이 곳을 채워 클라이언트를 만들어 보세요 -->
-		<script>
-			let notepad = new Notepad();
-		</script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/notepad.js"></script>
+</head>
+<body>
+<!-- TODO: 이 곳을 채워 클라이언트를 만들어 보세요 -->
+    <div class="wrapper">
+        <div class="notepad">
+            <ul class="menu">
+                <li><button class="writeBtn">새 메모</button></li>
+                <li><button class="saveBtn">저장</button></li>
+                <li><button class="updateBtn">수정 완료</button></li>
+                <li><button class="deleteBtn">삭제</button></li>
+            </ul>
+            <ul class="list"></ul>
+            <textarea class="memo" name="memo" id="memo" cols="30" rows="10" placeholder="새 메모를 작성하세요!"></textarea>
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+        new Notepad();
+    })
+</script>
+</body>
 </html>

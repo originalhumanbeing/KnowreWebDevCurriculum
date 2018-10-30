@@ -3,7 +3,7 @@ body {
 }
 
 .wrapper {
-    width: 80%;
+    width: 800px;
     height: 100%;
     font-size: 15px;
     margin: 100px auto;
@@ -12,14 +12,14 @@ body {
     -webkit-box-shadow: 5px 7px 17px -3px rgba(128,128,128,0.79);
     -moz-box-shadow: 5px 7px 17px -3px rgba(128,128,128,0.79);
     box-shadow: 5px 7px 17px -3px rgba(128,128,128,0.79);
-
+    position: relative;
 }
 
 h1 {
     text-align: center;
     font-size: 6em;
     line-height: 80px;
-    margin: 40px 0;
+    margin: 35px 0;
     font-weight: 100;
     border-bottom: 1px solid lightgrey;
 }
@@ -32,43 +32,45 @@ h1 {
     box-shadow: inset 1px 1px 17px -4px rgba(168,166,168,1);
     border: none;
     position: relative;
-    left: 30%;
+    left: 240px;
 }
 
 .todoItem {
     list-style: none;
     padding: 15px;
+    margin: 8px 0;
 }
 
 .todoCheckBox {
-    position: relative;
-    left: 190px;
+    position: absolute;
+    left: 286px;
     padding: 10px;
+    margin: 8px 0 0 0;
 }
 
 .todoOriginalBox {
+    position: absolute;
+    left: 305px;
     font-size: 1.3em;
     font-weight: 100;
-    position: absolute;
-    left: 380px;
-    line-height: 25px;
+    line-height: 28px;
     width: 300px;
 }
 
 .todoUpdateBox {
+    position: absolute;
+    left: 305px;
     font-size: 1.2em;
     font-weight: 100;
-    position: absolute;
-    left: 380px;
     padding: 5px 8px;
     outline: none;
-    width: 260px;
+    width: 270px;
     height: 15px;
 }
 
 .deleteBtn {
     position: absolute;
-    left: 667px;
+    left: 603px;
     padding: 3px 5px;
     margin: 3px 0 0 0;
     background-color: transparent;
@@ -78,6 +80,9 @@ h1 {
 
 .counter {
     text-align: center;
+    margin-top: 40px;
+    padding: 10px;
+    border-top: 1px solid lightgrey;
 }
 
 .counter * {
@@ -89,7 +94,7 @@ h1 {
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
 }
 
 .completed {
