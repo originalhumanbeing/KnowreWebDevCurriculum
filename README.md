@@ -6,12 +6,12 @@
 * 공부한 자세한 내용을 구경하고 싶으시다면 저의 [github - 해당 repository](https://github.com/originalhumanbeing/KnowreWebDevCurriculum)로 놀러와주세요! 
 
 ## 프로젝트 구현 내용
-### Todo application
+### [Todo application](https://originalhumanbeing.github.io/KnowreWebDevCurriculum/demo/todo/)
 * todo CRUD
 * 완료한 todo 항목 체크
 * todo와 완료한 todo 카운팅
 
-### Memo application
+### [Memo application](https://originalhumanbeing.github.io/KnowreWebDevCurriculum/demo/memo/)
 * 로그인/ 로그아웃
 > 로그인 가능한 user는 현재 3명입니다  
 > id: test1@email.com/ pwd: 1111    
