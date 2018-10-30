@@ -91,15 +91,12 @@ class Notepad {
                         li.addEventListener('click', () => {
                             let title = memo.split('.');
                             this.currentFile = title[0];
-                            console.log('showlist 메모 리스트 만들 때', this.currentUser);
                             fetch(`http://localhost:8080/memo/${this.currentUser}/${title[0]}`, {
                                 method: 'get'
                             }).then((res) => res.json()).then((data) => {
-                                this.textarea.value = data.body;
+                                this.textarea.value = data.memo;
                                 this.textarea.selectionStart = data.cursorStart;
-                                console.log(data.cursorStart);
                                 this.textarea.selectionEnd = data.cursorEnd;
-                                console.log(data.cursorEnd);
                                 this.textarea.setSelectionRange(data.cursorStart, data.cursorEnd);
                                 this.textarea.focus();
                             })
@@ -135,19 +132,22 @@ class Notepad {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
-            console.log('저장 당시 커서 시작', this.cursorStart);
-            console.log('저장 당시 커서 끝', this.cursorEnd);
+            this.cursorStart = this.textarea.selectionStart;
+            this.cursorEnd = this.textarea.selectionEnd;
+
             fetch(`http://localhost:8080/memo/${this.currentUser}`, {
                 method: 'post',
                 headers: myHeaders,
                 body: JSON.stringify({
-                    body: this.textarea.value,
+                    memo: this.textarea.value,
                     user: this.currentUser,
                     cursorStart: this.cursorStart,
                     cursorEnd: this.cursorEnd
                 })
             }).then((res) => res.json()).then((data) => {
-                this.textarea.value = data.body;
+                this.textarea.value = data.memo;
+                this.cursorStart = data.cursorStart;
+                this.cursorEnd = data.cursorEnd;
                 this.currentFile = data.title;
                 this.showList();
             })
@@ -157,12 +157,22 @@ class Notepad {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
+            this.cursorStart = this.textarea.selectionStart;
+            this.cursorEnd = this.textarea.selectionEnd;
+
             fetch(`http://localhost:8080/memo/${this.currentUser}/${this.currentFile}`, {
                 method: 'put',
                 headers: myHeaders,
-                body: JSON.stringify({body: this.textarea.value, user: this.currentUser})
+                body: JSON.stringify({
+                    memo: this.textarea.value,
+                    user: this.currentUser,
+                    cursorStart: this.cursorStart,
+                    cursorEnd: this.cursorEnd
+                })
             }).then((res) => res.json()).then((data) => {
-                this.textarea.value = data.body;
+                this.textarea.value = data.memo;
+                this.cursorStart = data.cursorStart;
+                this.cursorEnd = data.cursorEnd;
                 this.currentFile = data.title;
                 this.showList();
             })

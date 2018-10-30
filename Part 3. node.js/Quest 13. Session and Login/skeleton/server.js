@@ -18,19 +18,18 @@ let members = {
     1: {
         id: 'test1@email.com',
         pwd: '1111',
-        nickname: 'test1',
-        files: []
+        nickname: 'test1'
+    },
+    2: {
+        id: 'test2@email.com',
+        pwd: '2222',
+        nickname: 'test2'
+    },
+    3: {
+        id: 'test3@email.com',
+        pwd: '3333',
+        nickname: 'test3'
     }
-    // 2: {
-    //     id: 'test2@email.com',
-    //     pwd: '2222',
-    //     nickname: 'test2'
-    // },
-    // 3: {
-    //     id: 'test3@email.com',
-    //     pwd: '3333',
-    //     nickname: 'test3'
-    // }
 };
 
 app.get('/', (req, res) => {
@@ -76,31 +75,32 @@ app.get('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let id = req.params.title;
     let fileLocation = `./memos/${user}/${id}.txt`;
-    let cursorStart = '';
-    let cursorEnd = '';
-
-    for (let member in members) {
-        if (members[member].nickname === user) {
-            console.log(members[member].files);
-            cursorStart = members[member].files[id].cursorStart;
-            cursorEnd = members[member].files[id].cursorEnd;
-        }
-    }
 
     fs.readFile(fileLocation, 'utf8', function (error, data) {
         if (error) return res.sendStatus(404);
-        console.log(cursorStart);
-        console.log(cursorEnd);
-
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: data, cursorStart: cursorStart, cursorEnd: cursorEnd}));
+        // 'utf8' 형식으로는 JSON 파일을 못 읽으니까 읽어온 데이터 덩어리를 json 형식으로 파싱해줄 것!
+        data = JSON.parse(data);
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({
+            memo: data.memo,
+            cursorStart: data.cursorStart,
+            cursorEnd: data.cursorEnd
+        }));
     })
 });
 
 // 새 메모 저장
 app.post('/memo/:user', function (req, res) {
-    let data = req.body.body;
+    let memo = req.body.memo;
     let user = req.body.user;
+    let cursorStart = req.body.cursorStart;
+    let cursorEnd = req.body.cursorEnd;
+    let data = {
+        memo: memo,
+        cursorStart: cursorStart,
+        cursorEnd: cursorEnd
+    };
+
     if (!data || !user) return res.sendStatus(400);
 
     fs.readdir(`./memos/${user}`, function (err, files) {
@@ -120,21 +120,15 @@ app.post('/memo/:user', function (req, res) {
             }
         });
 
-        // 회원 db에 파일 정보 넣기
-        for (let member in members) {
-            if (members[member].nickname === user) {
-                members[member].files[title] = {
-                    cursorStart: req.body.cursorStart,
-                    cursorEnd: req.body.cursorEnd
-                };
-                console.log('저장할 때 ', members[member].files);
-            }
-        }
-
-        fs.writeFile(fileLocation, data, function (error) {
+        fs.writeFile(fileLocation, JSON.stringify(data), function (error) {
             if (error) throw error;
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.end(JSON.stringify({body: data, title: title}));
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({
+                memo: data.memo,
+                cursorStart: data.cursorStart,
+                cursorEnd: data.cursorEnd,
+                title: title
+            }));
         });
     });
 });
@@ -144,11 +138,24 @@ app.put('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let title = req.params.title;
     let fileLocation = `./memos/${user}/${title}.txt`;
-    let data = req.body.body;
-    fs.writeFile(fileLocation, data, function (error) {
+    let memo = req.body.memo;
+    let cursorStart = req.body.cursorStart;
+    let cursorEnd = req.body.cursorEnd;
+    let data = {
+        memo: memo,
+        cursorStart: cursorStart,
+        cursorEnd: cursorEnd
+    };
+
+    fs.writeFile(fileLocation, JSON.stringify(data), function (error) {
         if (error) throw error;
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: data, title: title}));
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({
+            memo: data.memo,
+            cursorStart: data.cursorStart,
+            cursorEnd: data.cursorEnd,
+            title: title
+        }));
     })
 });
 
