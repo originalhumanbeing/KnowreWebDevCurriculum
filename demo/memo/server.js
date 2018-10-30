@@ -3,6 +3,7 @@ const express = require('express'),
     fs = require('fs'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
+    cors = require('cors'),
     app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -13,6 +14,18 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+cors: {
+    origin: "https://originalhumanbeing.github.io/KnowreWebDevCurriculum/demo/memo/";
+}
+
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", cors.origin);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+app.use(cors());
 
 let members = {
     1: {
