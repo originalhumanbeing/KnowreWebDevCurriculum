@@ -96,5 +96,12 @@
 ## Quest
 * 로컬 MySQL 서버에서 Quest 12~13의 결과물을 MySQL 기반으로 만들어 보고자 합니다.
   * 먼저 테이블이 어떻게 설계되어야 할지, 어떤 정보를 담고 있어야 할지 생각해 보세요
+    * 회원 테이블/ 파일 테이블/ 수정 내용 테이블, 총 3개의 테이블을 생성
+      * 회원 테이블: id, nickname, email(id), pwd(digest). nickname으로 indexing.
+      * 파일 테이블: id, created time, owner(=id), title, content, cursorstart, cursorend
+      * 수정 내용 테이블: id, updated time, ower(=id), new title, new content, new cursorstart, new cursorend
+        * 수정한 요소와 해당 내용만 로깅할까도 생각했지만 그러면 컬럼 내 내용의 type이 명확하지 않아서 지저분할 것 같다
+    * 이전에 last tab을 구현하지 않은 것을 깜빡했다, 생성시간+수정시간을 비교해서 가장 최근에 작업한 것을 load하는 방식으로 구현하면 될듯
   * 사용자의 암호는 어떤 식으로 저장해야 할까요?
+    * 단방향 해시 함수를 발전시킨 adaptive key derivation function 중 하나를 적용.
 * **주의: 실제 node.js 프로그래밍을 할 필요는 없습니다. 알맞는 테이블만 생성하고 그 생성을 위한 SQL문을 제시하면 됩니다!**
