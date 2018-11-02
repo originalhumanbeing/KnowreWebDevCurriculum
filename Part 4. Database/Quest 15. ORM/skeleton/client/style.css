@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    color: #24292e;
+    box-sizing: border-box;
+}
+
+ul, li {
+    list-style: none;
+}
+
+.wrapper {
+    width: 900px;
+    height: 100%;
+    margin: 50px auto;
+}
+
+.notepad {
+    display: flex;
+    position: relative;
+    width: 900px;
+    min-height: 500px;
+}
+
+.list {
+    position: absolute;
+    top: 46px;
+    left: 0;
+    padding: 8px;
+    width: 250px;
+    min-height: 500px;
+    background-color: #ffffff;
+    border-left: 1px solid silver;
+    border-bottom: 1px solid silver;;
+    border-bottom-left-radius: 3px;
+}
+
+.list li {
+    font-size: 1.1em;
+    font-weight: 400;
+    border-bottom: 1px solid silver;
+    padding: 3px;
+    margin: 3px;
+}
+
+.memo {
+    position: absolute;
+    top: 46px;
+    left: 250px;
+    width: 650px;
+    min-height: 500px;
+    background-color: #ffffff;
+    border-top: 0;
+    border-right: 1px solid silver;
+    border-left: 1px solid silver;
+    border-bottom: 1px solid silver;;
+    border-bottom-right-radius: 3px;
+    padding: 8px;
+}
+
+.menu {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 900px;
+    padding: 8px 0 8px 8px;
+    background-color: darkseagreen;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+button {
+    padding: 5px 8px;
+    margin: 3px;
+    font-size: 0.9em;
+    font-weight: 400;
+    border-radius: 5px;
+    border: 1px solid #f6f8fa;
+    background-color: #ffffff;
+}
+
+#auth {
+    margin: 0 5px 15px 5px;
+    border-bottom: 1px solid black;
+}
+
+#auth input {
+    padding: 5px 8px;
+    margin: 8px 3px;
+    font-size: 0.9em;
+    font-weight: 400;
+    border-radius: 5px;
+    border: 1px solid #f6f8fa;
+    background-color: #ffffff;
+}
+
+.authFailMsg {
+    margin: 5px;
+    padding: 0 8px;
+    color: darkred;
+}
+
+#userNav {
+    margin: 0 5px 15px 5px;
+    border-bottom: 1px solid black;
+}
+
+#userNav . {
+    padding: 5px 8px;
+    margin: 10px 3px;
+}
+
+#userNickname {
+    display: inline-block;
+    margin-left: 15px;
+}
