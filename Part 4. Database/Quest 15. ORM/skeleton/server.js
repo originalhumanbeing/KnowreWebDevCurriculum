@@ -26,36 +26,36 @@ models.sequelize.sync()
         process.exit();
     });
 
-let members = [
-    {
-        id: 'test1@email.com',
-        pwd: '1111',
-        nickname: 'test1'
-    },
-    {
-        id: 'test2@email.com',
-        pwd: '2222',
-        nickname: 'test2'
-    },
-    {
-        id: 'test3@email.com',
-        pwd: '3333',
-        nickname: 'test3'
-    }
-];
+// let members = [
+//     {
+//         id: 'test1@email.com',
+//         pwd: '1111',
+//         nickname: 'test1'
+//     },
+//     {
+//         id: 'test2@email.com',
+//         pwd: '2222',
+//         nickname: 'test2'
+//     },
+//     {
+//         id: 'test3@email.com',
+//         pwd: '3333',
+//         nickname: 'test3'
+//     }
+// ];
 
 // 회원 암호화해서 db에 넣기
-for(let member of members) {
-    let salt = 'let there be salt';
-    crypto.pbkdf2(member.pwd, salt.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
-       if(err) console.log(err);
-       models.Member.create({
-           nickname: member.nickname,
-           email: member.id,
-           pwd: pwd.toString('base64')
-       })
-   })
-};
+// for(let member of members) {
+//     let salt = 'let there be salt';
+//     crypto.pbkdf2(member.pwd, salt.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
+//        if(err) console.log(err);
+//        models.Member.create({
+//            nickname: member.nickname,
+//            email: member.id,
+//            pwd: pwd.toString('base64')
+//        })
+//    })
+// };
 
 models.Member.hasMany(models.Memo);
 
@@ -63,43 +63,51 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+function pdkdf2Async(pwd, salt) {
+    return new Promise((resolve, reject) => {
+        crypto.pbkdf2(pwd, salt.toString('base64'), 130492, 64, 'sha512', function (err, pwd) {
+            if (err) return reject(err);
+            resolve(pwd.toString('base64'));
+        });
+    });
+}
+
+async function encryptPwd(pwd, salt) {
+    let encryptedPwd = await pdkdf2Async(pwd, salt);
+    return encryptedPwd;
+}
+
 // login 하기
 app.post('/login', function (req, res) {
     let id = req.body.id;
     let pwd = req.body.pwd;
-    // pwd를 여기서 다시 암호화하고 그 결과를 넣어요
-    // crypto.randomBytes(32, function(err, buffer) {
-    //     if(err) console.log(err);
-    //     else {
-    //         crypto.pbkdf2(member.pwd, buffer.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
-    //             if(err) console.log(err);
-    //         })
-    //     }
-    // });
-
-
-    models.Member.findOne({ where: { email : id } })
-        .then(result => {
-            let modelMemberResult = result.dataValues;
-            console.log(modelMemberResult);
-            return modelMemberResult;});
+    let salt = 'let there be salt';
+    let savedPwd = '';
 
     if (id && pwd) {
-        for (let member in members) {
-            if (members[member].id === id && members[member].pwd === pwd) {
-                req.session.isLogin = true;
-                req.session.nickname = members[member].nickname;
+        models.Member.findOne({where: {email: id}})
+            .then(queryResult => {
+                savedPwd = queryResult.dataValues.pwd;
+                encryptPwd(pwd, salt).then(encryptedPwd => {
+                    if (encryptedPwd === savedPwd) {
+                        req.session.isLogin = true;
+                        req.session.nickname = queryResult.dataValues.nickname;
 
+                        res.writeHead(200, {'Content-Type': 'text/html'});
+                        res.end(JSON.stringify({body: req.session}));
+                    } else {
+                        res.writeHead(200, {'Content-Type': 'text/html'});
+                        res.end(JSON.stringify({body: '비밀번호가 일치하지 않습니다!'}));
+                    }
+                });
+            })
+            .catch(err => {
                 res.writeHead(200, {'Content-Type': 'text/html'});
-                res.end(JSON.stringify({body: req.session}));
-                return;
-            }
-        }
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: '아이디와 패스워드를 다시 확인해주세요!'}));
+                res.end(JSON.stringify({body: '아이디가 존재하지 않습니다!'}));
+            })
     } else {
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: '로그인 해주세요!'}));
+        res.end(JSON.stringify({body: '로그인이 필요합니다!'}));
     }
 });
 
