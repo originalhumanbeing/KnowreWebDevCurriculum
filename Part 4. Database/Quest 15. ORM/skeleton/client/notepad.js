@@ -73,19 +73,9 @@ class Notepad {
                 if (!data['body'] || data['body'].length === 0) {
                     console.log('아직 아무 파일도 없습니다');
                 } else {
-                    let temp = [];
-                    let files = [];
-                    data['body'].map(e => {
-                        let file = e.split('.');
-                        temp.push(file[0]);
-                    });
-                    temp.sort((a, b) => a - b);
-                    temp.map(e => {
-                        e = e + '.txt';
-                        files.push(e);
-                    });
+                    data['body'].sort((a, b) => a - b);
 
-                    for (let memo of files) {
+                    for (let memo of data['body']) {
                         let li = document.createElement('li');
                         li.classList.add(memo);
                         li.innerText = memo;

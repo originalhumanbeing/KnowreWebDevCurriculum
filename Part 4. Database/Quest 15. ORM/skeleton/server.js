@@ -26,38 +26,7 @@ models.sequelize.sync()
         process.exit();
     });
 
-// let members = [
-//     {
-//         id: 'test1@email.com',
-//         pwd: '1111',
-//         nickname: 'test1'
-//     },
-//     {
-//         id: 'test2@email.com',
-//         pwd: '2222',
-//         nickname: 'test2'
-//     },
-//     {
-//         id: 'test3@email.com',
-//         pwd: '3333',
-//         nickname: 'test3'
-//     }
-// ];
-
-// 회원 암호화해서 db에 넣기
-// for(let member of members) {
-//     let salt = 'let there be salt';
-//     crypto.pbkdf2(member.pwd, salt.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
-//        if(err) console.log(err);
-//        models.Member.create({
-//            nickname: member.nickname,
-//            email: member.id,
-//            pwd: pwd.toString('base64')
-//        })
-//    })
-// };
-
-models.Member.hasMany(models.Memo);
+models.Member.hasMany(models.Memo, {foreignKey: 'owner'});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -82,24 +51,26 @@ app.post('/login', function (req, res) {
     let id = req.body.id;
     let pwd = req.body.pwd;
     let salt = 'let there be salt';
-    let savedPwd = '';
 
     if (id && pwd) {
+
         models.Member.findOne({where: {email: id}})
             .then(queryResult => {
-                savedPwd = queryResult.dataValues.pwd;
-                encryptPwd(pwd, salt).then(encryptedPwd => {
-                    if (encryptedPwd === savedPwd) {
-                        req.session.isLogin = true;
-                        req.session.nickname = queryResult.dataValues.nickname;
+                return encryptPwd(pwd, salt)
+                    .then(encryptPwd => ({encryptPwd, queryResult}));
+            })
+            .then(result => {
+                const {encryptPwd, queryResult} = result;
+                if (encryptPwd === queryResult.dataValues.pwd) {
+                    req.session.isLogin = true;
+                    req.session.nickname = queryResult.dataValues.nickname;
 
-                        res.writeHead(200, {'Content-Type': 'text/html'});
-                        res.end(JSON.stringify({body: req.session}));
-                    } else {
-                        res.writeHead(200, {'Content-Type': 'text/html'});
-                        res.end(JSON.stringify({body: '비밀번호가 일치하지 않습니다!'}));
-                    }
-                });
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                    res.end(JSON.stringify({body: req.session}));
+                } else {
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                    res.end(JSON.stringify({body: '비밀번호가 일치하지 않습니다!'}));
+                }
             })
             .catch(err => {
                 res.writeHead(200, {'Content-Type': 'text/html'});
@@ -114,11 +85,17 @@ app.post('/login', function (req, res) {
 // 전체 메모 리스트 가져오기
 app.get('/memos/:user', function (req, res) {
     let user = req.params.user;
-    let fileLocation = `./memos/${user}`;
-    fs.readdir(fileLocation, function (err, files) {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: files}));
-    })
+
+    models.Memo.findAll({where: {owner: user}})
+        .then(results => {
+            let data = [];
+            for(let result of results) {
+                data.push(result.dataValues.title);
+            }
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(JSON.stringify({body: data}));
+        })
+        .catch(err => console.log(err));
 });
 
 // 메모 읽기
@@ -146,42 +123,37 @@ app.post('/memo/:user', function (req, res) {
     let user = req.body.user;
     let cursorStart = req.body.cursorStart;
     let cursorEnd = req.body.cursorEnd;
-    let data = {
-        memo: memo,
-        cursorStart: cursorStart,
-        cursorEnd: cursorEnd
-    };
 
-    if (!data || !user) return res.sendStatus(400);
+    if (!memo || !user) return res.sendStatus(400);
 
-    fs.readdir(`./memos/${user}`, function (err, files) {
-        let totalFiles = files.length;
-        let title = totalFiles + 1;
-        let fileLocation = `./memos/${user}/${title}.txt`;
+    models.Memo.findAll({where: {owner: user}})
+        .then(results => {
+            let totalFiles = results.length;
+            let title = totalFiles + 1;
 
-        files.map(e => {
-            e = e.split('.');
-            e = e[0];
-            if (totalFiles > 0 && title === Number(e)) {
-                let lastFile = files[totalFiles - 1];
-                lastFile = lastFile.split('.');
-                title = Number(lastFile[0]) + 1;
-                title = title;
-                fileLocation = `./memos/${user}/${title}.txt`;
+            for (let result of results) {
+                if (title === result.dataValues.title) {
+                    title = Number(result.dataValues.title) + 1;
+                }
             }
-        });
 
-        fs.writeFile(fileLocation, JSON.stringify(data), function (error) {
-            if (error) throw error;
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({
-                memo: data.memo,
-                cursorStart: data.cursorStart,
-                cursorEnd: data.cursorEnd,
-                title: title
-            }));
-        });
-    });
+            models.Memo.create({
+                owner: user,
+                title: title,
+                content: memo,
+                cursorStart: cursorStart,
+                cursorEnd: cursorEnd
+            }).then(createdResult => {
+                return createdResult;
+            }).catch(err => {
+                console.error(err);
+            });
+
+            return results;
+        })
+        .catch(err => {
+            console.error(err);
+        })
 });
 
 // 메모 수정
