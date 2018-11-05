@@ -46,24 +46,18 @@ let members = [
 
 // 회원 암호화해서 db에 넣기
 for(let member of members) {
-    crypto.randomBytes(32, function(err, buffer) {
+    let salt = 'let there be salt';
+    crypto.pbkdf2(member.pwd, salt.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
        if(err) console.log(err);
-       else {
-           crypto.pbkdf2(member.pwd, buffer.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
-               if(err) console.log(err);
-               models.Member.create({
-                   nickname: member.nickname,
-                   email: member.id,
-                   pwd: pwd.toString('base64')
-               }).then(result => res.json(result));
-           })
-       }
-    });
-}
+       models.Member.create({
+           nickname: member.nickname,
+           email: member.id,
+           pwd: pwd.toString('base64')
+       })
+   })
+};
 
-// 회원, 파일 테이블 관계를 맺어놓기 1:N
-// file belongsTo member (file's primary key would be member id)
-// file.hasOne.... 이 맞는듯, 각 파일마다 소유자 번호를 가지고 있게.
+models.Member.hasMany(models.Memo);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -73,6 +67,22 @@ app.get('/', (req, res) => {
 app.post('/login', function (req, res) {
     let id = req.body.id;
     let pwd = req.body.pwd;
+    // pwd를 여기서 다시 암호화하고 그 결과를 넣어요
+    // crypto.randomBytes(32, function(err, buffer) {
+    //     if(err) console.log(err);
+    //     else {
+    //         crypto.pbkdf2(member.pwd, buffer.toString('base64'), 130492, 64, 'sha512', function(err, pwd) {
+    //             if(err) console.log(err);
+    //         })
+    //     }
+    // });
+
+
+    models.Member.findOne({ where: { email : id } })
+        .then(result => {
+            let modelMemberResult = result.dataValues;
+            console.log(modelMemberResult);
+            return modelMemberResult;});
 
     if (id && pwd) {
         for (let member in members) {
