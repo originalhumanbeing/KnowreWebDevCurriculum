@@ -89,7 +89,7 @@ app.get('/memos/:user', function (req, res) {
     models.Memo.findAll({where: {owner: user}})
         .then(results => {
             let data = [];
-            for(let result of results) {
+            for (let result of results) {
                 data.push(result.dataValues.title);
             }
             res.writeHead(200, {'Content-Type': 'text/html'});
@@ -102,19 +102,13 @@ app.get('/memos/:user', function (req, res) {
 app.get('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let id = req.params.title;
-    let fileLocation = `./memos/${user}/${id}.txt`;
 
-    fs.readFile(fileLocation, 'utf8', function (error, data) {
-        if (error) return res.sendStatus(404);
-        // 'utf8' 형식으로는 JSON 파일을 못 읽으니까 읽어온 데이터 덩어리를 json 형식으로 파싱해줄 것!
-        data = JSON.parse(data);
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify({
-            memo: data.memo,
-            cursorStart: data.cursorStart,
-            cursorEnd: data.cursorEnd
-        }));
-    })
+    models.Memo.findOne({where: {owner: user, title: id}})
+        .then(result => {
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(JSON.stringify({body: result.dataValues}));
+        })
+        .catch(err => console.log(err));
 });
 
 // 새 메모 저장
@@ -143,11 +137,12 @@ app.post('/memo/:user', function (req, res) {
                 content: memo,
                 cursorStart: cursorStart,
                 cursorEnd: cursorEnd
-            }).then(createdResult => {
-                return createdResult;
-            }).catch(err => {
-                console.error(err);
-            });
+            })
+                .then(createdResult => {
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                    res.end(JSON.stringify({body: createdResult}));
+                })
+                .catch(err => console.error(err));
 
             return results;
         })
@@ -160,38 +155,44 @@ app.post('/memo/:user', function (req, res) {
 app.put('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let title = req.params.title;
-    let fileLocation = `./memos/${user}/${title}.txt`;
     let memo = req.body.memo;
     let cursorStart = req.body.cursorStart;
     let cursorEnd = req.body.cursorEnd;
-    let data = {
-        memo: memo,
+
+    models.Memo.update({
+        content: memo,
         cursorStart: cursorStart,
         cursorEnd: cursorEnd
-    };
-
-    fs.writeFile(fileLocation, JSON.stringify(data), function (error) {
-        if (error) throw error;
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify({
-            memo: data.memo,
-            cursorStart: data.cursorStart,
-            cursorEnd: data.cursorEnd,
-            title: title
-        }));
+    }, {
+        where: {owner: user, title: title}
     })
+        .then(updatedResult => {
+            if(updatedResult === 1) {
+                models.Memo.findOne({where: {owner: user, title: title}})
+                    .then(result => {
+                        res.writeHead(200, {'Content-Type': 'text/html'});
+                        res.end(JSON.stringify({body: result.dataValues}));
+                    })
+                    .catch(err => console.log(err));
+            }
+        })
+        .catch(err => console.log(err));
 });
 
 // 메모 삭제
 app.delete('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let title = req.params.title;
-    let fileLocation = `./memos/${user}/${title}.txt`;
-    fs.unlink(fileLocation, function () {
-        let msg = `${title}.txt이 삭제 완료되었습니다`;
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(JSON.stringify({body: msg}));
-    })
+
+    models.Memo.destroy({where: {owner: user, title: title}})
+        .then(destroyedResult=> {
+            if(destroyedResult === 1) {
+                let msg = `${title}이 삭제 완료되었습니다`;
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.end(JSON.stringify({body: msg}));
+            }
+        })
+        .catch(err => console.log(err));
 });
 
 const server = app.listen(8080, () => {

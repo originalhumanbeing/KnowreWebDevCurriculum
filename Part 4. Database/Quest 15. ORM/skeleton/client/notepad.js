@@ -80,15 +80,14 @@ class Notepad {
                         li.classList.add(memo);
                         li.innerText = memo;
                         li.addEventListener('click', () => {
-                            let title = memo.split('.');
-                            this.currentFile = title[0];
-                            fetch(`http://localhost:8080/memo/${this.currentUser}/${title[0]}`, {
+                            this.currentFile = memo;
+                            fetch(`http://localhost:8080/memo/${this.currentUser}/${this.currentFile}`, {
                                 method: 'get'
                             }).then((res) => res.json()).then((data) => {
-                                this.textarea.value = data.memo;
-                                this.textarea.selectionStart = data.cursorStart;
-                                this.textarea.selectionEnd = data.cursorEnd;
-                                this.textarea.setSelectionRange(data.cursorStart, data.cursorEnd);
+                                this.textarea.value = data.body.content;
+                                this.textarea.selectionStart = data.body.cursorStart;
+                                this.textarea.selectionEnd = data.body.cursorEnd;
+                                this.textarea.setSelectionRange(data.body.cursorStart, data.body.cursorEnd);
                                 this.textarea.focus();
                             })
                         });
@@ -136,10 +135,10 @@ class Notepad {
                     cursorEnd: this.cursorEnd
                 })
             }).then((res) => res.json()).then((data) => {
-                this.textarea.value = data.memo;
-                this.cursorStart = data.cursorStart;
-                this.cursorEnd = data.cursorEnd;
-                this.currentFile = data.title;
+                this.textarea.value = data.body.content;
+                this.cursorStart = data.body.cursorStart;
+                this.cursorEnd = data.body.cursorEnd;
+                this.currentFile = data.body.title;
                 this.showList();
             })
         });
@@ -161,10 +160,11 @@ class Notepad {
                     cursorEnd: this.cursorEnd
                 })
             }).then((res) => res.json()).then((data) => {
-                this.textarea.value = data.memo;
-                this.cursorStart = data.cursorStart;
-                this.cursorEnd = data.cursorEnd;
-                this.currentFile = data.title;
+                console.log('update된 데이터', data);
+                this.textarea.value = data.body.content;
+                this.cursorStart = data.body.cursorStart;
+                this.cursorEnd = data.body.cursorEnd;
+                this.currentFile = data.body.title;
                 this.showList();
             })
         });
@@ -174,8 +174,9 @@ class Notepad {
                 method: 'delete'
             }).then((res) => res.json()).then(data => {
                 window.alert(data.body);
+            }).then(res => {
+                this.showList();
             });
-            this.showList();
             this.textarea.value = '';
         });
     }
