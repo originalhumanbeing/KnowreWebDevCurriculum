@@ -12,7 +12,7 @@ const sessionStoreOptions = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'bsoup0404@',
+    password: 'password',
     database: 'knowrememo'
 };
 
