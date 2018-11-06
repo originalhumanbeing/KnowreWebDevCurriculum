@@ -3,9 +3,18 @@ const express = require('express'),
     fs = require('fs'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    models = require('./models'),
+    MySQLStore = require('express-mysql-session')(session);
+models = require('./models'),
     crypto = require('crypto'),
     app = express();
+
+const sessionStoreOptions = {
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: 'bsoup0404@',
+    database: 'knowrememo'
+};
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -13,7 +22,8 @@ app.use(express.static('client'));
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new MySQLStore(sessionStoreOptions)
 }));
 
 models.sequelize.sync()
@@ -65,8 +75,24 @@ app.post('/login', function (req, res) {
                     req.session.isLogin = true;
                     req.session.nickname = queryResult.dataValues.nickname;
 
-                    res.writeHead(200, {'Content-Type': 'text/html'});
-                    res.end(JSON.stringify({body: req.session}));
+                    let lastMemo = req.session.workedOnLast;
+                    id = id.split('@')[0];
+
+                    if (lastMemo && lastMemo !== '') {
+                        models.Memo.findOne({where: {owner: id, title: lastMemo}})
+                            .then(result => {
+                                res.writeHead(200, {'Content-Type': 'text/html'});
+                                res.end(JSON.stringify({
+                                    session: req.session,
+                                    lastMemoContent: result.dataValues
+                                }));
+                            })
+                            .catch(err => console.log(err));
+                    } else {
+                        console.log('마지막 작업물이 빈 값일 때 ', lastMemo);
+                        res.writeHead(200, {'Content-Type': 'text/html'});
+                        res.end(JSON.stringify({body: req.session}));
+                    }
                 } else {
                     res.writeHead(200, {'Content-Type': 'text/html'});
                     res.end(JSON.stringify({body: '비밀번호가 일치하지 않습니다!'}));
@@ -102,6 +128,7 @@ app.get('/memos/:user', function (req, res) {
 app.get('/memo/:user/:title', function (req, res) {
     let user = req.params.user;
     let id = req.params.title;
+    req.session.workedOnLast = id;
 
     models.Memo.findOne({where: {owner: user, title: id}})
         .then(result => {
@@ -139,6 +166,7 @@ app.post('/memo/:user', function (req, res) {
                 cursorEnd: cursorEnd
             })
                 .then(createdResult => {
+                    req.session.workedOnLast = title;
                     res.writeHead(200, {'Content-Type': 'text/html'});
                     res.end(JSON.stringify({body: createdResult}));
                 })
@@ -167,7 +195,8 @@ app.put('/memo/:user/:title', function (req, res) {
         where: {owner: user, title: title}
     })
         .then(updatedResult => {
-            if(updatedResult === 1) {
+            if (updatedResult === 1) {
+                req.session.workedOnLast = title;
                 models.Memo.findOne({where: {owner: user, title: title}})
                     .then(result => {
                         res.writeHead(200, {'Content-Type': 'text/html'});
@@ -185,8 +214,9 @@ app.delete('/memo/:user/:title', function (req, res) {
     let title = req.params.title;
 
     models.Memo.destroy({where: {owner: user, title: title}})
-        .then(destroyedResult=> {
-            if(destroyedResult === 1) {
+        .then(destroyedResult => {
+            if (destroyedResult === 1) {
+                req.session.workedOnLast = '';
                 let msg = `${title}이 삭제 완료되었습니다`;
                 res.writeHead(200, {'Content-Type': 'text/html'});
                 res.end(JSON.stringify({body: msg}));
