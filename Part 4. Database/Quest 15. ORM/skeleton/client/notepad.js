@@ -36,22 +36,8 @@ class Notepad {
             headers: myHeaders,
             body: JSON.stringify({id: id, pwd: pwd})
         }).then((res) => res.json()).then((data) => {
-                console.log('session 객체', data);
-            if (data['body'] && data['body'].isLogin && data['body'].nickname) {
-                this.textarea.value = '';
-                this.currentFile = '';
+            if (data['body'].isLogin && data['body'].nickname) {
                 this.currentUser = data['body'].nickname;
-                this.showList();
-                this.authForm.hidden = true;
-                this.userNickname.innerText = this.currentUser + '님';
-                this.userNav.hidden = false;
-                this.authFailMsg.hidden = true;
-            } else if (data['session'] && data['session'].isLogin && data['session'].nickname && data['lastMemoContent']) {
-                this.textarea.value = data['lastMemoContent'].content || '';
-                this.currentFile = data['lastMemoContent'];
-                this.textarea.setSelectionRange(data['lastMemoContent'].cursorStart, data['lastMemoContent'].cursorEnd);
-                this.textarea.focus();
-                this.currentUser = data['session'].nickname;
                 this.showList();
                 this.authForm.hidden = true;
                 this.userNickname.innerText = this.currentUser + '님';
