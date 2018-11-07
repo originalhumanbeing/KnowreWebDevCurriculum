@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "*",
+    "express-mysql-session": "^2.0.1",
+    "express-session": "^1.15.6",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "sequelize": "^4.41.0",
+    "sequelize-cli": "^5.2.0"
+  }
+}

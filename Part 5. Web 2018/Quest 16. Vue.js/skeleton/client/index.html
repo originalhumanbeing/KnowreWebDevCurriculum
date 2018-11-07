@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./notepad.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="authFailMsg" hidden="true"></div>
+        <form id="auth" method="post">
+            <input type="text" id="id" name="id" placeholder="email@email.com">
+            <input type="password" id="pwd" name="pwd" placeholder="password">
+            <input type="submit" id="loginBtn" value="login">
+        </form>
+        <div id="userNav" hidden="true">
+            <p id="userNickname"></p>
+            <button id="logoutBtn">logout</button>
+        </div>
+        <div class="notepad">
+            <ul class="menu">
+                <li><button class="writeBtn">새 메모</button></li>
+                <li><button class="saveBtn">저장</button></li>
+                <li><button class="updateBtn">수정 완료</button></li>
+                <li><button class="deleteBtn">삭제</button></li>
+            </ul>
+            <ul class="list"></ul>
+            <textarea class="memo" name="memo" id="memo" cols="30" rows="10" placeholder="새 메모를 작성하세요!"></textarea>
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+        new Notepad();
+    })
+</script>
+</body>
+</html>
