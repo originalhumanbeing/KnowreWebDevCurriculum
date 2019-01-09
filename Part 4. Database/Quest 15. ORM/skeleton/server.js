@@ -12,7 +12,7 @@ const sessionStoreOptions = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'password',
+    password: 'bsoup0404@',
     database: 'knowrememo'
 };
 
@@ -225,6 +225,6 @@ app.delete('/memo/:user/:title', function (req, res) {
         .catch(err => console.log(err));
 });
 
-const server = app.listen(8080, () => {
+const server = app.listen(5000, () => {
     console.log('Server started!');
 });

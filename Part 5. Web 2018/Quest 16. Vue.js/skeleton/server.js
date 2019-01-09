@@ -2,19 +2,21 @@ const express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    MySQLStore = require('express-mysql-session')(session);
-models = require('./models'),
+    MySQLStore = require('express-mysql-session')(session),
+    models = require('./models'),
     crypto = require('crypto'),
+    cors = require('cors'),
     app = express();
 
 const sessionStoreOptions = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'password',
+    password: 'bsoup0404@',
     database: 'knowrememo'
 };
 
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static('client'));
@@ -50,61 +52,51 @@ function pdkdf2Async(pwd, salt) {
     });
 }
 
-async function encryptPwd(pwd, salt) {
-    let encryptedPwd = await pdkdf2Async(pwd, salt);
-    return encryptedPwd;
-}
-
 // login 하기
-app.post('/login', function (req, res) {
+app.post('/login', async function (req, res) {
     let id = req.body.id;
     let pwd = req.body.pwd;
     let salt = 'let there be salt';
 
-    if (id && pwd) {
-
-        models.Member.findOne({where: {email: id}})
-            .then(queryResult => {
-                return encryptPwd(pwd, salt)
-                    .then(encryptPwd => ({encryptPwd, queryResult}));
-            })
-            .then(result => {
-                const {encryptPwd, queryResult} = result;
-                if (encryptPwd === queryResult.dataValues.pwd) {
-                    req.session.isLogin = true;
-                    req.session.nickname = queryResult.dataValues.nickname;
-
-                    let lastMemo = req.session.workedOnLast;
-                    id = id.split('@')[0];
-
-                    if (lastMemo && lastMemo !== '') {
-                        models.Memo.findOne({where: {owner: id, title: lastMemo}})
-                            .then(result => {
-                                res.writeHead(200, {'Content-Type': 'text/html'});
-                                res.end(JSON.stringify({
-                                    session: req.session,
-                                    lastMemoContent: result.dataValues
-                                }));
-                            })
-                            .catch(err => console.log(err));
-                    } else {
-                        console.log('마지막 작업물이 빈 값일 때 ', lastMemo);
-                        res.writeHead(200, {'Content-Type': 'text/html'});
-                        res.end(JSON.stringify({body: req.session}));
-                    }
-                } else {
-                    res.writeHead(200, {'Content-Type': 'text/html'});
-                    res.end(JSON.stringify({body: '비밀번호가 일치하지 않습니다!'}));
-                }
-            })
-            .catch(err => {
-                res.writeHead(200, {'Content-Type': 'text/html'});
-                res.end(JSON.stringify({body: '아이디가 존재하지 않습니다!'}));
-            })
-    } else {
+    if (!id || !pwd) {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end(JSON.stringify({body: '로그인이 필요합니다!'}));
+        return;
     }
+
+    let queryResult;
+    try {
+        queryResult = await models.Member.findOne({where: {email: id}});
+    } catch (e) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(JSON.stringify({body: '아이디가 존재하지 않습니다!'}));
+        return;
+    }
+    const encryptedPwd = await pdkdf2Async(pwd, salt);
+    if (encryptedPwd !== queryResult.dataValues.pwd) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(JSON.stringify({body: '비밀번호가 일치하지 않습니다!'}));
+        return;
+    }
+
+    req.session.isLogin = true;
+    req.session.nickname = queryResult.dataValues.nickname;
+
+    let lastMemoTitle = req.session.workedOnLast;
+    id = id.split('@')[0];
+
+    if (!lastMemoTitle || lastMemoTitle === '') {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(JSON.stringify({body: req.session}));
+        return;
+    }
+
+    const lastMemo = await models.Memo.findOne({where: {owner: id, title: lastMemoTitle}})
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(JSON.stringify({
+        session: req.session,
+        lastMemoContent: lastMemo.dataValues
+    }));
 });
 
 // 전체 메모 리스트 가져오기
@@ -179,32 +171,32 @@ app.post('/memo/:user', function (req, res) {
 });
 
 // 메모 수정
-app.put('/memo/:user/:title', function (req, res) {
-    let user = req.params.user;
-    let title = req.params.title;
-    let memo = req.body.memo;
-    let cursorStart = req.body.cursorStart;
-    let cursorEnd = req.body.cursorEnd;
+app.put('/memo/:user/:title', async function (req, res) {
+    const user = req.params.user;
+    const title = req.params.title;
+    const memo = req.body.memo;
+    const cursorStart = req.body.cursorStart;
+    const cursorEnd = req.body.cursorEnd;
 
-    models.Memo.update({
+    const updatedResult = await models.Memo.update({
         content: memo,
         cursorStart: cursorStart,
         cursorEnd: cursorEnd
     }, {
         where: {owner: user, title: title}
-    })
-        .then(updatedResult => {
-            if (updatedResult === 1) {
-                req.session.workedOnLast = title;
-                models.Memo.findOne({where: {owner: user, title: title}})
-                    .then(result => {
-                        res.writeHead(200, {'Content-Type': 'text/html'});
-                        res.end(JSON.stringify({body: result.dataValues}));
-                    })
-                    .catch(err => console.log(err));
-            }
-        })
-        .catch(err => console.log(err));
+    });
+
+    if(updatedResult !== 1) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(JSON.stringify({body: '수정에 실패했습니다!'}));
+        return;
+    }
+
+    req.session.workedOnLast = title;
+
+    const result = await models.Memo.findOne({where: {owner: user, title: title}});
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(JSON.stringify({body: result.dataValues}));
 });
 
 // 메모 삭제

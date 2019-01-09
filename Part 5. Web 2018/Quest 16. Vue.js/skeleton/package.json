@@ -2,6 +2,7 @@
   "private": true,
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "*",
     "express-mysql-session": "^2.0.1",
     "express-session": "^1.15.6",
