@@ -69,6 +69,7 @@
       ```
   - 이런 식으로 field와 field의 타입을 설명하는 스칼라 타입을 작성한다, 스칼라 타입에는 Int, Float, String, Boolean, ID 타입이 존재하며
   커스텀 타입을 만들 수도 있다. enum 타입도 지원된다. !(느낌표) 표시를 통해 필수값을 지정할 수 있고, 해당 값을 skip했을 경우, non-nullable 에러가 난다
+  - mutation에서 주의해야 할 것은 input type이 따로 존재한다는 것이다. input을 받을 때 해당 타입으로 받고, 반환하는 output으로 재활용할 수 없다
   * node.js 상에서 GraphQL 서버를 실행하고 스키마를 정의하려면 어떻게 해야 하나요?
     - graphql 설치 후, buildSchema로 스키마를 정의하고, 해당 스키마를 통해 요청이 들어오면 실행할 함수를 resolver를 통해 작성한다.
     app에 단일 endpoint를 지정 후, 해당 uri로 리퀘스트가 들어왔을 때 graphql이 처리할 수 있도록 schema, resolver를 연결해준다.
@@ -93,8 +94,17 @@
   
 * GraphQL 리졸버는 어떤 역할을 하며 어떤 식으로 정의되나요?
   - 리졸버는 결국 클라이언트가 데이터를 fetch하기 위해 요청했을 때, 해당 데이터를 어떻게 처리해서 줄 것인지, 이를 구현해놓은 함수라고 할 수 있다.
-  위의 코드에서 볼 수 있듯이, 어떤 쿼리나 타입을 인자와 함께 받았을 때, 무엇을 return해줄 것인지 정의한다.
+  위의 코드에서 볼 수 있듯이, 어떤 쿼리나 타입을 인자와 함께 받았을 때, 무엇을 return해줄 것인지 정의한다. return 값은 대게 promise로 반환된다.
+  - args: obj, args, context, info 순. positional 인자들이다.
+    - obj: 탑 레벨 query의 경우, rootValue가 전달된다. (기본 서버 설정) 다른 경우에는 resolver를 통해 받을 결과를 가지고 있는 객체.
+    - args: query와 함께 전달받은 인자들. 예컨대, `author(name: "Ada")`라는 query를 받았다면 name이라는 arg와 그 기본 값인 Ada 
+    즉,`{"name": "Ada"}`가 이에 해당한다.
+    - context: 특별한 query를 통해서 전체 resolver에 모두 공유되는 객체. auth 정보, dataloader 인스턴스를 포함한 요청 상태를 포함한다.
+    - info: query의 실행 상태 등을 포함한다, 일반적으로 사용되는 인자는 아니다.
   * GraphQL 리졸버의 성능 향상을 위한 DataLoader는 무엇이고 어떻게 쓰나요?
+    - graphql의 가장 큰 특징 중 하나는 nested query다, 즉 query 안에 또 다른 query가 있을 수 있는데 이는 N+1문제를 일으킨다. 
+    - Dataloader는 이벤트 루프가 1회 돌 때 발생하는 모든 load를 하나로 합친 후에 batch loading function을 call하여 N+1문제를 해결해준다.
+    - 요청별 캐싱은 해주지 않기 때문에 따로 처리해야 한다.
   
 * 클라이언트 상에서 GraphQL 요청을 보내려면 어떻게 해야 할까요?
   * Apollo Client의 장점은 무엇일까요?
@@ -104,6 +114,8 @@
 * 직전 퀘스트의 메모장의 서버 부분을 GraphQL API로 리팩토링 해 보세요.
 
 ## 참고
-[graphql 관련 좋은 글](https://medium.com/@FourwingsY/graphql%EC%9D%84-%EC%98%A4%ED%95%B4%ED%95%98%EB%8B%A4-3216f404134)
-[express로 graphql 서버 만들기](https://medium.com/codingthesmartway-com-blog/creating-a-graphql-server-with-node-js-and-express-f6dddc5320e1)
-[graphql vs REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)
+[graphql 관련 좋은 글](https://medium.com/@FourwingsY/graphql%EC%9D%84-%EC%98%A4%ED%95%B4%ED%95%98%EB%8B%A4-3216f404134)  
+[express로 graphql 서버 만들기](https://medium.com/codingthesmartway-com-blog/creating-a-graphql-server-with-node-js-and-express-f6dddc5320e1)  
+[graphql vs REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)  
+[N+1문제 초간단 개념](https://zetawiki.com/wiki/N%2B1_%EC%BF%BC%EB%A6%AC_%EB%AC%B8%EC%A0%9C)  
+[Dataloader 찬양](https://medium.com/@gajus/using-dataloader-to-batch-requests-c345f4b23433)  
