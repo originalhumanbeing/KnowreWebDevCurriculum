@@ -114,6 +114,7 @@
 * 직전 퀘스트의 메모장의 서버 부분을 GraphQL API로 리팩토링 해 보세요.
 
 ## 참고
+[graphql vs RESTful API](https://www.holaxprogramming.com/2018/01/20/graphql-vs-restful-api/)  
 [graphql 관련 좋은 글](https://medium.com/@FourwingsY/graphql%EC%9D%84-%EC%98%A4%ED%95%B4%ED%95%98%EB%8B%A4-3216f404134)  
 [express로 graphql 서버 만들기](https://medium.com/codingthesmartway-com-blog/creating-a-graphql-server-with-node-js-and-express-f6dddc5320e1)  
 [graphql vs REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)  

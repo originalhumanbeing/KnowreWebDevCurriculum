@@ -6,6 +6,8 @@
 
 ## Topics
 * 브라우저의 역사
+- 웹 브라우저란: HTML 문서나 파일을 연동하고 출력하는 응용 소프트웨어. 대표적인 HTTP 사용자 에이전트.
+- URL: uniform resource locator. http, https, ftp 등 여러가지가 있을 수 있고, 이를 표시하기 위해 http://www.... 이런 식으로 표기한다. 
   * Mosaic
   * Netscape
   * Internet Explorer

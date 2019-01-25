@@ -1,0 +1,23 @@
+block content
+    table(width= '100%', border= '1')
+        tr
+            th DELETE
+            th EDIT
+            th ID
+            th Name
+            th Model Number
+            th Series
+        - var leng = result.length
+        - for(var i=0; i< leng; i++) {
+            tr
+                - var href = /delete/ + result[i].id
+                td
+                    a(href= href) DELETE
+                - var href = /edit/ + result[i].id
+                td
+                    a(href= href) EDIT
+                td= result[i].id
+                td= result[i].name
+                td= result[i].modelnumber
+                td= result[i].series
+        - }
