@@ -7,8 +7,18 @@
 ## Topics
 * 퍼블리싱을 위해 몇 가지 중요한 속성들
   * `font-*`
+   - font-style: 이탤릭체 등 글꼴 스타일  
+   - font-weight: 글자 두께  
+   - font-size: 글자 크기
+   - font-family: 글꼴
+   - font-variant: 글꼴 변형 (소문자 -> 대문자). 잘 사용 안 함
+   - line-height: 줄 높이 설정
   * `text-*`
+   - text-decoration: none. 밑줄, 취소선 등 스타일을 제거할 수 있다. 
   * `box-sizing`
+   - content-box: 기본 속성. 해당 box의 넓이는 순수하게 content 영역만을 포함한다. `width: 300px; border: 1px solid;`라고 하면 콘텐츠 영역의 너비가 300px이 되고, 양쪽에 border가 1px씩 더해져, 총 302px의 너비를 갖는다.
+   - padding-box: box의 넓이를 콘텐츠 영역+안쪽 여백인 패딩까지 포함하여 계산한다. 
+   - border-box: box의 넓이를 콘텐츠 영역+안쪽 여백인 패딩+테두리인 보더까지 포험하여 계산한다. 가장 많이 사용한다.
   * `:hover`/`:active`
 
 ## Resources
